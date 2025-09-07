@@ -52,13 +52,15 @@ ul {
   margin-top: 15px;
   list-style: none;
   padding: 0;
+  display: flex;
+  flex-direction: column; /* biar vertikal */
+  gap: 10px; /* kasih jarak antar item */
 }
 
 li {
   background: #f9f9f9;
-  padding: 20px;
+  padding: 10px;
   border-radius: 8px;
-  margin-bottom: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;

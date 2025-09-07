@@ -1,0 +1,81 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+header {
+  background: #33333300;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  text-shadow: #f4f4f4;
+}
+
+#contact {
+  background: #33333300;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  text-shadow: #f4f4f4;
+}
+
+body {
+  height: 200px;
+  background: linear-gradient(to right, #07a3b2, #d9ecc7);
+}
+
+section {
+  padding: 20px;
+}
+
+h2 {
+  color: #333;
+}
+
+.project {
+  background: #f4f4f456;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.project a {
+  text-decoration: none;
+  color: #007BFF;
+}
+
+.profile {
+  text-align: center;
+  padding: 30px 15px;
+}
+
+.profile img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%; /* bikin foto bulat */
+  object-fit: cover;
+  border: 3px solid #3498db;
+  margin-bottom: 15px;
+}
+
+.profile h2 {
+  font-size: 20px;
+  margin: 5px 0;
+}
+
+.profile p {
+  font-size: 14px;
+  color: #555;
+}
+
+@keyframes scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+    

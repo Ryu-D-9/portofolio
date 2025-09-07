@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Calculator with Sound</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(to right, #07a3b2, #d9ecc7);
+    }
+    .calculator {
+      width: 340px;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.5);
+      transform: perspective(1000px) rotateX(5deg);
+    }
+    .display {
+      width: 100%;
+      height: 70px;
+      background: #2e2e44;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      text-align: right;
+      padding: 15px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #fff;
+      overflow-x: auto;
+      box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5),
+                  inset -2px -2px 5px rgba(255,255,255,0.1);
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+    button {
+      height: 65px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 4px 4px 8px rgba(0,0,0,0.5),
+                  -4px -4px 8px rgba(255,255,255,0.05);
+    }
+    button:active {
+      transform: scale(0.92);
+      box-shadow: inset 2px 2px 6px rgba(0,0,0,0.6),
+                  inset -2px -2px 6px rgba(255,255,255,0.1);
+    }
+    .btn-operator {
+      background: #ff7b54;
+      color: #fff;
+    }
+    .btn-number {
+      background: #2e2e44;
+      color: #fff;
+    }
+    .btn-clear {
+      background: #ff4b5c;
+      color: #fff;
+    }
+    .btn-equal {
+      background: #28a745;
+      color: #fff;
+      grid-column: span 2;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <div class="display" id="display">0</div>
+    <div class="buttons">
+      <button class="btn-clear" onclick="playClick(); clearDisplay()">C</button>
+      <button class="btn-operator" onclick="playClick(); appendValue('/')">÷</button>
+      <button class="btn-operator" onclick="playClick(); appendValue('*')">×</button>
+      <button class="btn-operator" onclick="playClick(); appendValue('-')">−</button>
+      <button class="btn-number" onclick="playClick(); appendValue('7')">7</button>
+      <button class="btn-number" onclick="playClick(); appendValue('8')">8</button>
+      <button class="btn-number" onclick="playClick(); appendValue('9')">9</button>
+      <button class="btn-operator" onclick="playClick(); appendValue('+')">+</button>
+      <button class="btn-number" onclick="playClick(); appendValue('4')">4</button>
+      <button class="btn-number" onclick="playClick(); appendValue('5')">5</button>
+      <button class="btn-number" onclick="playClick(); appendValue('6')">6</button>
+      <button class="btn-number" onclick="playClick(); appendValue('.')">.</button>
+      <button class="btn-number" onclick="playClick(); appendValue('1')">1</button>
+      <button class="btn-number" onclick="playClick(); appendValue('2')">2</button>
+      <button class="btn-number" onclick="playClick(); appendValue('3')">3</button>
+      <button class="btn-number" onclick="playClick(); deleteLast()">⌫</button>
+      <button class="btn-number" onclick="playClick(); appendValue('0')">0</button>
+      <button class="btn-equal" onclick="playClick(); calculate()">=</button>
+    </div>
+  </div>
+  <!-- Sound -->
+  <audio id="clickSound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
+  <script>
+    let display = document.getElementById("display");
+    let clickSound = document.getElementById("clickSound");
+    function playClick() {
+      clickSound.currentTime = 0; // reset sound
+      clickSound.play();
+    }
+    function appendValue(val) {
+      if (display.innerText === "0" || display.innerText === "Error") {
+        display.innerText = val;
+      } else {
+        display.innerText += val;
+      }
+    }
+    function clearDisplay() {
+      display.innerText = "0";
+    }
+    function deleteLast() {
+      if (display.innerText.length === 1 || display.innerText === "Error") {
+        display.innerText = "0";
+      } else {
+        display.innerText = display.innerText.slice(0, -1);
+      }
+    }
+    function calculate() {
+      try {
+        display.innerText = eval(display.innerText);
+      } catch {
+        display.innerText = "Error";
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #07a3b2, #d9ecc7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.app {
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: 500px;         /* diperbesar dari 300px */
+  max-width: 90%;       /* supaya responsif di layar kecil */
+  text-align: center;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.input-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.input-container input[type="text"],
+.input-container input[type="date"] {
+  flex: 1;              /* biar input melar */
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+#addBtn {
+  padding: 8px 16px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#addBtn:hover {
+  background: #0056b3;
+}
+ul {
+  margin-top: 15px;
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+li.completed {
+  text-decoration: line-through;
+  color: gray;
+}

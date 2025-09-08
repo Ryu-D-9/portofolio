@@ -3,32 +3,95 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Klontong Header</title>
-<link rel="stylesheet" href="klontong.css">
+  <title>Modern Blog Site</title>
+  <link rel="stylesheet" href="klontong.css"
+  <style>
+  </style>
 </head>
 <body>
-  
-  <header class="header">
-    <!-- Left Section -->
-    <div class="header-left">
-      <h1>Klontong</h1>
-      <div class="tagline">Everything is Here</div>
-      <p>Buy what you want,<br>Sell what you don’t need</p>
-      <a href="#" class="btn">Explore Now</a>
-    </div>
-
-    <!-- Right Section -->
-    <div class="header-right">
-      <div class="search-box">
-        <input type="text" placeholder="Search">
-      </div>
-      <div class="nav-links">
-        <a href="#">Catalog</a>
-        <a href="#">Official Store</a>
-        <a href="#">Wishlist</a>
-      </div>
-    </div>
+  <header>
+    <h1>Klontong</h1>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Categories</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
   </header>
-
+  <div class="hero">Welcome to My Blog</div>
+  <div class="container">
+    <h2>Latest Posts</h2>
+    <div class="search-bar">
+      <input type="text" id="search" placeholder="Search posts...">
+      <select id="category">
+        <option value="all">All Categories</option>
+        <option value="technology">Technology</option>
+        <option value="travel">Travel</option>
+        <option value="food">Food</option>
+        <option value="health">Health</option>
+      </select>
+      <button onclick="filterPosts()">Search</button>
+    </div>
+    <div class="blog-grid" id="blogGrid">
+      <div class="card" data-category="technology">
+        <img src="https://source.unsplash.com/400x250/?technology" alt="">
+        <div class="card-content">
+          <h3>Future of Technology</h3>
+          <p>Exploring how AI, robotics and space innovation are shaping the next decade...</p>
+          <a href="#" class="btn">Read More</a>
+        </div>
+      </div>
+      <div class="card" data-category="travel">
+        <img src="https://source.unsplash.com/400x250/?travel" alt="">
+        <div class="card-content">
+          <h3>Travel Diaries</h3>
+          <p>Discover hidden gems across the world and the best travel hacks for budget trips...</p>
+          <a href="#" class="btn">Read More</a>
+        </div>
+      </div>
+      <div class="card" data-category="food">
+        <img src="https://source.unsplash.com/400x250/?food" alt="">
+        <div class="card-content">
+          <h3>Food & Recipes</h3>
+          <p>A collection of delicious recipes and the art of cooking made simple for everyone...</p>
+          <a href="#" class="btn">Read More</a>
+        </div>
+      </div>
+      <div class="card" data-category="health">
+        <img src="https://source.unsplash.com/400x250/?health" alt="">
+        <div class="card-content">
+          <h3>Health & Lifestyle</h3>
+          <p>Tips on fitness, mindfulness and creating a balanced lifestyle for a better tomorrow...</p>
+          <a href="#" class="btn">Read More</a>
+        </div>
+      </div>
+    </div>
+    <div class="comment-box">
+      <h3>Leave a Comment</h3>
+      <textarea placeholder="Write your comment..."></textarea>
+      <button>Post Comment</button>
+    </div>
+  </div>
+  <footer>
+    <p>&copy; 2025 MyBlog | All Rights Reserved</p>
+  </footer>
+  <script>
+    function filterPosts(){
+      const search = document.getElementById('search').value.toLowerCase();
+      const category = document.getElementById('category').value;
+      const posts = document.querySelectorAll('.card');
+      posts.forEach(post => {
+        const title = post.querySelector('h3').innerText.toLowerCase();
+        const postCategory = post.getAttribute('data-category');
+        if((title.includes(search) || search === '') && (category === 'all' || category === postCategory)){
+          post.style.display = 'block';
+        } else {
+          post.style.display = 'none';
+        }
+      });
+    }
+  </script>
 </body>
 </html>

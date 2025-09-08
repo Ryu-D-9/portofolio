@@ -2,6 +2,29 @@
       margin: 0;
       font-family: Arial, sans-serif;
     }
+
+    /* Default untuk desktop */
+body {
+  font-size: 18px;
+  background: rgb(255, 255, 255);
+}
+
+/* Untuk tablet (lebar maks 768px) */
+@media (max-width: 768px) {
+  body {
+    font-size: 16px;
+    background: lightgreen;
+  }
+}
+
+/* Untuk HP (lebar maks 480px) */
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+    background: lightyellow;
+  }
+}
+
     h1{
         padding: 0;
         margin: 0;

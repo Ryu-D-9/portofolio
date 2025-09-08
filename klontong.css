@@ -1,0 +1,91 @@
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    h1{
+        padding: 0;
+        margin: 0;
+    }
+
+    /* Header dengan background image */
+    .header {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 40px 60px;
+      color: #fff;
+      height: 350px;
+      background: url("assets/s5-a01-01-multi-prebuilt-systems-rwd.jpg.rendition.intel.web.864.486.jpg") no-repeat center center/cover;
+    }
+
+    /* Overlay gelap supaya teks lebih jelas */
+    .header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+    }
+
+    .header-left,
+    .header-right {
+      position: relative;
+      z-index: 2;
+    }
+
+    .header-left h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .header-left .tagline {
+      font-size: 22px;
+      font-weight: bold;
+      margin-top: 6px;
+    }
+
+    .header-left p {
+      margin: 6px 0 0;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    .header-left .btn {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 10px 20px;
+      background: #ff4fc3;
+      color: #fff;
+      font-size: 14px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .header-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 14px;
+    }
+
+    .search-box input {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 25px;
+      outline: none;
+      width: 220px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 15px;
+      margin-left: 15px;
+      font-weight: 500;
+    }
+
+    .nav-links a:hover {
+      color: #ff4fc3;
+    }

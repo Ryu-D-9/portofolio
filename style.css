@@ -5,6 +5,7 @@ body {
   line-height: 1.6;
 }
 
+
 header {
   background: #33333300;
   color: #fff;
@@ -30,20 +31,76 @@ section {
   padding: 20px;
 }
 
-h2 {
-  color: #333;
+#projects {
+  padding: 30px;
+  background: linear-gradient(to right, #07a3b2, #d9ecc7);
 }
 
-.project {
-  background: #f4f4f456;
-  padding: 15px;
+#projects h2 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.projects-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* otomatis responsif */
+  gap: 20px;
+}
+
+.project-card {
+  background: #ffffff38;
+  padding: 25px 15px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  transition: 0.3s;
+  margin: 10px;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+.project-card i {
+  font-size: 40px;
+  padding: 20px;
+  border-radius: 50%;
+  margin-bottom: 15px;
+  color: #fff;
+  display: inline-block;
+}
+
+/* warna beda tiap card */
+.project-card:nth-child(1) i { background: #a5cf0d00; }
+.project-card:nth-child(2) i { background: #2195f300; }
+.project-card:nth-child(3) i { background: #ff990000; }
+.project-card:nth-child(4) i { background: #9b27b000; }
+
+.project-card h3 {
+  margin: 10px 0 5px;
+  font-size: 18px;
+}
+
+.project-card p {
+  font-size: 14px;
+  color: #666;
   margin-bottom: 10px;
-  border-radius: 8px;
 }
 
-.project a {
+.project-card a {
+  display: inline-block;
+  margin-top: 8px;
   text-decoration: none;
-  color: #007BFF;
+  background: #2575fc;
+  color: #fff;
+  padding: 8px 15px;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+
+.project-card a:hover {
+  background: #1a5ed1;
 }
 
 .profile {
@@ -56,7 +113,7 @@ h2 {
   height: 120px;
   border-radius: 50%; /* bikin foto bulat */
   object-fit: cover;
-  border: 3px solid #3498db;
+  border: 3px solid #3498db00;
   margin-bottom: 15px;
 }
 
@@ -78,4 +135,22 @@ h2 {
         transform: translateX(-50%);
       }
     }
+
+    
+    .image-marquee {
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+    .image-marquee .images{
+      display: flex;
+      position: relative;
+      animation: scroll 20s linear infinite;
+    }
+    .image-marquee img {
+      width: 200px;
+      height: 100px;
+      margin-right: 20px;
+    }
+  
     

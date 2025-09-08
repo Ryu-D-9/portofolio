@@ -3,12 +3,12 @@
       font-family:'Poppins', sans-serif;
     }
     body{
-      background:#f4f6fa;
+      background: linear-gradient(to right, #07a3b2, #d9ecc7);
       color:#333;
       line-height:1.6;
     }
     header{
-      background:#1a1a2e;
+      background:#1a1a2e00;
       color:#fff;
       padding:20px 50px;
       display:flex;
@@ -91,7 +91,7 @@
       gap:20px;
     }
     .card{
-      background:#fff;
+      background:#ffffff4b;
       border-radius:12px;
       overflow:hidden;
       box-shadow:0 4px 8px rgba(0,0,0,0.1);
@@ -169,3 +169,6 @@
       padding:20px;
       margin-top:30px;
     }
+    
+
+    

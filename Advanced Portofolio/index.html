@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio — Dhiaz</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header / Navbar -->
+  <header class="header">
+    <a href="#" class="brand">DHZ<span>.</span></a>
+    <nav class="nav" id="nav">
+      <a href="#home">Home</a>
+      <a href="#projects">Projects</a>
+      <a href="#about">About</a>
+      <a href="#contact" class="cta">Contact</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Menu">&#9776;</button>
+  </header>
+
+  <!-- Hero -->
+  <section id="home" class="hero container">
+    <div class="hero-text">
+      <h1>Dhiaz Bagus Normansyah</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vitae massa eu arcu porta molestie. Sed sodales magna id magna semper elementum. Vivamus tincidunt quam non ultricies elementum. Ut eget nunc eros. Vestibulum mattis enim mollis metus fringilla, eu finibus risus congue. Praesent vitae commodo lectus, sed fermentum enim. Nullam convallis pharetra finibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis molestie ex sed massa aliquet, pharetra mattis massa condimentum. Praesent mauris ante, molestie a diam nec, lobortis lacinia ante. Praesent ligula ante, placerat sed erat vel, vulputate hendrerit erat.
+
+Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Quisque consectetur nec sem non ullamcorper. Suspendisse diam velit, eleifend non ante sed, tincidunt dignissim ipsum. Vestibulum tristique auctor ultricies. Maecenas rutrum mattis felis, sit amet sagittis nisl condimentum sit amet. Interdum et malesuada fames ac ante ipsum primis in faucibus. Proin dignissim, orci eget vehicula sodales, metus tortor hendrerit ipsum, ac pharetra purus velit tempus nisi.
+
+Nunc ultricies ornare sem ac consequat. Vestibulum tempor sagittis imperdiet. Nam et rhoncus diam. Proin ut dui in justo pharetra ultricies sed vitae ante. Nunc quam augue, eleifend sit amet bibendum eu, hendrerit a dolor. Nullam tristique tellus id ex rutrum, vitae accumsan ante efficitur. Nam non pulvinar augue. Sed rutrum sem sed ligula imperdiet vehicula.</p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn">Lihat Project</a>
+        <a href="#contact" class="btn ghost">Kontak</a>
+      </div>
+    </div>
+
+<div class="photo-wrapper">
+  <img src="aset/WhatsApp Image 2025-09-10 at 00.47.09.png" alt="Foto Saya" class="profile-photo">
+  <div class="photo-overlay">
+    <p></p>
+  </div>
+</div>
+</div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="section container">
+    <div class="section-head">
+      <h2>Projects</h2>
+      <p>Beberapa karya terbaru. Klik untuk demo.</p>
+    </div>
+
+    <div class="grid">
+      <article class="card">
+        <img src="https://picsum.photos/600/400?random=1" alt="Preview project">
+        <div class="card-body">
+          <h3>To-Do List (LocalStorage)</h3>
+          <p>Aplikasi catat tugas dengan simpan otomatis di browser.</p>
+          <div class="tags">
+            <span>HTML</span><span>CSS</span><span>JS</span>
+          </div>
+          <div class="actions">
+            <a href="/todo.html" target="_blank" class="btn small">Lihat</a>
+            <a href="#" target="_blank" class="btn ghost small">Code</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://picsum.photos/600/400?random=2" alt="Preview project">
+        <div class="card-body">
+          <h3>Weather App (API)</h3>
+          <p>Ambil cuaca realtime dengan OpenWeatherMap, UI ringan.</p>
+          <div class="tags">
+            <span>JS</span><span>API</span><span>Responsive</span>
+          </div>
+          <div class="actions">
+            <a href="/cuaca.html" target="_blank" class="btn small">Lihat</a>
+            <a href="#" target="_blank" class="btn ghost small">Code</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://picsum.photos/600/400?random=3" alt="Preview project">
+        <div class="card-body">
+          <h3>Recipe Finder</h3>
+          <p>Cari resep berdasarkan bahan. Tampilkan negara asal & instruksi.</p>
+          <div class="tags">
+            <span>API</span><span>UX</span><span>SPA</span>
+          </div>
+          <div class="actions">
+            <a href="/Reciept AI/index.html" target="_blank" class="btn small">Lihat</a>
+            <a href="#" target="_blank" class="btn ghost small">Code</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="section container about">
+    <div class="about-text">
+      <h2>Tentang Saya</h2>
+      <p>Halo! Saya Front-End Developer pemula yang fokus pada website cepat, rapi, dan mudah digunakan. Saat ini mendalami React, pengelolaan state, dan integrasi API.</p>
+      <ul class="bullets">
+        <li>HTML, CSS (Flexbox/Grid), JavaScript</li>
+        <li>React (components, hooks), Vite</li>
+        <li>Git & GitHub, Deploy Netlify/Vercel</li>
+      </ul>
+    </div>
+    <div class="about-card">
+      <div class="pill">Sedang mencari: Junior Front-End</div>
+      <div class="pill">Kota: Bandung (onsite/hybrid)</div>
+      <div class="pill">Freelance: Available</div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="section container contact">
+    <h2>Kontak</h2>
+    <p>Terbuka untuk diskusi & peluang kerja.</p>
+    <form class="contact-form" onsubmit="return false;">
+      <input type="text" placeholder="Nama" required />
+      <input type="email" placeholder="Email" required />
+      <textarea rows="4" placeholder="Pesan"></textarea>
+      <button class="btn">Kirim</button>
+    </form>
+    <div class="socials">
+      <a href="#" target="_blank">GitHub</a>
+      <a href="#" target="_blank">LinkedIn</a>
+      <a href="mailto:you@mail.com">Email</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2025 Dhiaz — Built with ❤️</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

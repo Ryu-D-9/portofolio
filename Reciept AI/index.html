@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Recipe Finder — Bahan → Menu, Resep & Negara</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>🍳 Recipe Finder</h1>
+    <p>Tulis bahan, pisahkan dengan koma. Contoh: <em>chicken, tomato, garlic</em></p>
+    <div class="input-row">
+      <input id="ingInput" type="text" placeholder="Contoh: chicken, tomato, garlic" />
+      <button id="searchBtn">Cari Resep</button>
+    </div>
+  </header>
+
+  <main id="results" class="results"></main>
+
+  <template id="mealCardTpl">
+    <article class="meal-card">
+      <img class="thumb" alt="thumbnail" />
+      <div class="meta">
+        <h2 class="title"></h2>
+        <p class="area"></p>
+        <details>
+          <summary>Lihat resep</summary>
+          <div class="recipe">
+            <h3>Bahan</h3>
+            <ul class="ingredients"></ul>
+            <h3>Instruksi</h3>
+            <p class="instructions"></p>
+            <a class="youtube" target="_blank" rel="noopener">Tonton di YouTube ▶</a>
+          </div>
+        </details>
+      </div>
+    </article>
+  </template>
+
+  <script src="reciept.js"></script>
+</body>
+</html>

@@ -1,59 +1,56 @@
-document.getElementById("addBtn").addEventListener("click", function () {
-  const taskInput = document.getElementById("taskInput");
-  const dateInput = document.getElementById("dateInput");
-  const taskList = document.getElementById("taskList");
+/* ================================
+   To-Do List — LocalStorage Ready
+   ================================ */
 
-  if (taskInput.value.trim() === "") {
-    alert("Tugas tidak boleh kosong!");
-    return;
-  }
+// KONFIG: key penyimpanan di browser
+const STORAGE_KEY = "todo.items.v1";
 
-  // Format tanggal
-  let formattedDate = "Tanpa tanggal";
-  if (dateInput.value) {
-    const date = new Date(dateInput.value);
-    formattedDate = date.toLocaleDateString("id-ID", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric"
-    });
-  }
+// ---- State ----
+let items = load();        // [{id, text, done}]
+let currentFilter = "all"; // 'all' | 'active' | 'done'
 
-  // buat elemen <li>
-  const li = document.createElement("li");
+// ---- Ambil elemen DOM ----
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => document.querySelectorAll(sel);
 
-  // buat span teks tugas
-  const span = document.createElement("span");
-  span.textContent = `${taskInput.value} (📅 ${formattedDate})`;
+const inputNew = $("#newTask");
+const btnAdd = $("#addBtn");
+const ulList = $("#list");
+const textCounter = $("#counter");
+const btnClearDone = $("#clearDone");
+const filterBtns = $$(".filters [data-filter]");
 
-  // tombol hapus
-  const deleteBtn = document.createElement("button");
-  deleteBtn.textContent = "Hapus";
-  deleteBtn.style.marginLeft = "10px";
-  deleteBtn.addEventListener("click", function () {
-    taskList.removeChild(li);
+// ---- Util ----
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2);
+function load() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch { return []; }
+}
+function save() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+}
+
+// =================== Render ===================
+function render() {
+  // 1) tentukan data yang ditampilkan berdasar filter
+  let shown = items;
+  if (currentFilter === "active") shown = items.filter(i => !i.done);
+  if (currentFilter === "done")   shown = items.filter(i =>  i.done);
+
+  // 2) render list
+  ulList.innerHTML = "";
+  shown.forEach(item => ulList.appendChild(renderItem(item)));
+
+  // 3) counter
+  const left = items.filter(i => !i.done).length;
+  textCounter.textContent = `${items.length} tugas • ${left} belum selesai`;
+
+  // 4) highlight tombol filter aktif
+  filterBtns.forEach(b => {
+    const active = b.dataset.filter === currentFilter;
+    b.style.outline = active ? "2px solid rgba(124,92,255,.8)" : "1px solid rgba(255,255,255,.08)";
+    b.style.opacity = active ? "1" : ".85";
   });
+}
 
-  // tombol edit
-  const editBtn = document.createElement("button");
-  editBtn.textContent = "Edit";
-  editBtn.style.marginLeft = "5px";
-  editBtn.addEventListener("click", function () {
-    const newTask = prompt("Edit tugas:", taskInput.value);
-    const newDate = prompt("Edit tanggal (dd/mm/yyyy):", formattedDate);
-
-    if (newTask !== null && newTask.trim() !== "") {
-      span.textContent = `${newTask} (📅 ${newDate || "Tanpa tanggal"})`;
-    }
-  });
-
-  // susun elemen
-  li.appendChild(span);
-  li.appendChild(editBtn);
-  li.appendChild(deleteBtn);
-  taskList.appendChild(li);
-
-  // reset input
-  taskInput.value = "";
-  dateInput.value = "";
-});
+function renderItem(item) {

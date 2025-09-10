@@ -48,6 +48,7 @@ body{
 /* Hero */
 .hero{display:grid; grid-template-columns:1.2fr .8fr; gap:24px; padding:72px 0}
 .hero h1{font-size:40px; line-height:1.1; margin:0 0 12px}
+.hero h2{font-size:40px; line-height:1.1; margin:0 0 12px}
 .hero p{color:var(--muted); margin:0 0 16px}
 .hero-cta{display:flex; gap:12px}
 .btn{
@@ -222,4 +223,39 @@ body{
     padding-left: 32px;
     padding-right: 32px;
   }
+}
+
+#contact {
+  max-width: 600px;
+  margin: 60px auto;
+  padding: 20px;
+  background: rgba(245, 242, 242, 0);
+  border-radius: 12px;
+  text-align: center;
+}
+
+#contact input, 
+#contact textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: #0f1220;
+  color: #fff;
+}
+
+#contact button {
+  background: linear-gradient(90deg, #7c5cff, #2ec5ff);
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+#contact button:hover {
+  transform: scale(1.05);
 }

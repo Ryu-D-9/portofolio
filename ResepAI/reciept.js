@@ -1,9 +1,8 @@
-// Ambil elemen dari halaman
 const btn = document.getElementById("findBtn");
 const input = document.getElementById("ingredients");
 const results = document.getElementById("results");
 
-// Event tombol "Cari Resep"
+// Event klik tombol
 btn.addEventListener("click", () => {
   const ingredients = input.value.trim();
   if (!ingredients) {
@@ -13,24 +12,24 @@ btn.addEventListener("click", () => {
   findRecipes(ingredients);
 });
 
-// Fungsi utama: coba Gemini, kalau gagal pakai MealDB
+// === Fungsi utama ===
 async function findRecipes(ingredients) {
   results.innerHTML = "<p>🔎 Sedang mencari resep...</p>";
 
   try {
-    // === Coba panggil API Gemini lewat backend Vercel ===
+    // Panggil Gemini API via backend Vercel
     const res = await fetch(`/api/gemini?prompt=${encodeURIComponent(ingredients)}`);
-    if (!res.ok) throw new Error("Gagal panggil Gemini");
+    if (!res.ok) throw new Error("Gemini error");
 
     const data = await res.json();
     const text = data.result || "";
 
     let recipes = [];
     try {
-      recipes = JSON.parse(text); // Gemini harus balikin JSON
+      recipes = JSON.parse(text); // Harus format JSON dari Gemini
       renderRecipes(recipes);
     } catch (e) {
-      console.warn("❌ Gagal parsing JSON dari Gemini:", e);
+      console.warn("❌ JSON Gemini gagal diparsing:", e);
       await fetchMealDB(ingredients); // fallback ke MealDB
     }
   } catch (err) {
@@ -52,7 +51,8 @@ function renderRecipes(recipes) {
     div.className = "recipe";
     div.innerHTML = `
       <h3>${r.nama} (${r.asal})</h3>
-      <p><strong>Bahan:</strong> ${r.bahan.join(", ")}</p>
+      <p><strong>Bahan:</strong></p>
+      <ul>${r.bahan.map(b => `<li>${b}</li>`).join("")}</ul>
       <p><strong>Langkah:</strong></p>
       <ol>${r.langkah.map(l => `<li>${l}</li>`).join("")}</ol>
     `;
@@ -60,14 +60,14 @@ function renderRecipes(recipes) {
   });
 }
 
-// === Fallback: API MealDB ===
+// === Fallback MealDB ===
 async function fetchMealDB(ingredients) {
   try {
     const res = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${encodeURIComponent(ingredients)}`);
     const data = await res.json();
 
     if (!data.meals) {
-      results.innerHTML = "<p>Tidak ada resep ditemukan di MealDB.</p>";
+      results.innerHTML = "<p>⚠️ Tidak ada resep ditemukan di MealDB untuk bahan ini.</p>";
       return;
     }
 
@@ -78,15 +78,36 @@ async function fetchMealDB(ingredients) {
   }
 }
 
-function renderMealDB(meals) {
+async function renderMealDB(meals) {
   results.innerHTML = "";
-  meals.forEach(m => {
-    const div = document.createElement("div");
-    div.className = "recipe";
-    div.innerHTML = `
-      <h3>${m.strMeal}</h3>
-      <img src="${m.strMealThumb}" alt="${m.strMeal}" style="max-width:200px;border-radius:8px"/>
-    `;
-    results.appendChild(div);
-  });
+
+  for (const m of meals) {
+    // Ambil detail resep MealDB
+    const detailRes = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${m.idMeal}`);
+    const detailData = await detailRes.json();
+    const meal = detailData.meals[0];
+
+    // Kumpulkan bahan + takaran
+    const ingredients = [];
+    for (let i = 1; i <= 20; i++) {
+      const ing = meal[`strIngredient${i}`];
+      const measure = meal[`strMeasure${i}`];
+      if (ing && ing.trim()) {
+        ingredients.push(`${ing} - ${measure}`);
+      }
+    }
+
+    // Render ke HTML
+ const div = document.createElement("div");
+div.className = "recipe";
+div.setAttribute("data-aos", "zoom-in"); // animasi zoom saat muncul
+div.innerHTML = `
+  <h3>${meal.strMeal} (${meal.strArea})</h3>
+  <img src="${meal.strMealThumb}" alt="${meal.strMeal}" style="max-width:200px;border-radius:8px"/>
+  <p><strong>Bahan:</strong></p>
+  <ul>${ingredients.map(i => `<li>${i}</li>`).join("")}</ul>
+  <p><strong>Instruksi:</strong> ${meal.strInstructions}</p>
+`;
+results.appendChild(div);
+  }
 }

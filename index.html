@@ -11,7 +11,7 @@
 <body>
   <!-- Header / Navbar -->
   <header class="header">
-    <a href="#" class="brand">My portofolio<span>.</span></a>
+    <a href="#" class="brand">My Portofolio<span>.</span></a>
     <nav class="nav" id="nav">
       <a href="#home">Home</a>
       <a href="#projects">Projects</a>
@@ -24,10 +24,10 @@
   <!-- Hero -->
   <section id="home" class="hero container">
     <div class="hero-text">
-      <h1>Dhiaz Bagus Normansyah</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vitae massa eu arcu porta molestie. Sed sodales magna id magna semper elementum. Vivamus tincidunt quam non ultricies elementum. Ut eget nunc eros. Vestibulum mattis enim mollis metus fringilla, eu finibus risus congue. Praesent vitae commodo lectus, sed fermentum enim. Nullam convallis pharetra finibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis molestie ex sed massa aliquet, pharetra mattis massa condimentum. Praesent mauris ante, molestie a diam nec, lobortis lacinia ante. Praesent ligula ante, placerat sed erat vel, vulputate hendrerit erat.
-
-Pellentesque habitant morbi tristique senectus et netus et malesuada .</p>
+      <h1>Hi👋,</h1>
+      <h2>Saya Dhiaz Bagus Normansyah</h2>
+      <p>Saya seorang Front-End Developer pemula yang bersemangat dalam belajar dan membangun website modern, responsif, dan user-friendly.
+Senang belajar teknologi baru dan menciptakan pengalaman digital yang nyaman bagi pengguna.</p>
       <div class="hero-cta">
         <a href="#projects" class="btn">Lihat Project</a>
         <a href="#contact" class="btn ghost">Kontak</a>
@@ -47,7 +47,7 @@ Pellentesque habitant morbi tristique senectus et netus et malesuada .</p>
   <section id="projects" class="section container">
     <div class="section-head">
       <h2>Projects</h2>
-      <p>Beberapa karya terbaru. Klik untuk demo.</p>
+      <p>Beberapa karya portofolio saya.</p>
     </div>
 
     <div class="grid">
@@ -117,30 +117,37 @@ Pellentesque habitant morbi tristique senectus et netus et malesuada .</p>
   <section id="about" class="section container about">
     <div class="about-text">
       <h2>Tentang Saya</h2>
-      <p>Halo! Saya Front-End Developer pemula yang fokus pada website cepat, rapi, dan mudah digunakan. Saat ini mendalami React, pengelolaan state, dan integrasi API.</p>
+      <p>Riwayat Pendidikan dan Pekerjaan.</p>
       <ul class="bullets">
-        <li>HTML, CSS (Flexbox/Grid), JavaScript</li>
-        <li>React (components, hooks), Vite</li>
-        <li>Git & GitHub, Deploy Netlify/Vercel</li>
+        <li>SMK PEMKAB Ponorogo-2019</li>
+        <li>PT CIPTA ARTHA NADYA-2021</li>
+        <li>PT SUMBER ALFA TRIJAYA Tbk.-Sekarang</li>
       </ul>
     </div>
     <div class="about-card">
-      <div class="pill">Sedang mencari: Junior Front-End</div>
-      <div class="pill">Kota: Bandung (onsite/hybrid)</div>
-      <div class="pill">Freelance: Available</div>
+      <div class="pill">HTML, CSS (Flexbox/Grid), JavaScript</div>
+      <div class="pill">React (components, hooks), Vite</div>
+      <div class="pill">Git & GitHub, Deploy Netlify/Vercel</div>
     </div>
   </section>
 
   <!-- Contact -->
   <section id="contact" class="section container contact">
-    <h2>Kontak</h2>
-    <p>Terbuka untuk diskusi & peluang kerja.</p>
-    <form class="contact-form" onsubmit="return false;">
-      <input type="text" placeholder="Nama" required />
-      <input type="email" placeholder="Email" required />
-      <textarea rows="4" placeholder="Pesan"></textarea>
-      <button class="btn">Kirim</button>
-    </form>
+<section id="contact">
+  <h2>Kontak</h2>
+  <p>Terbuka untuk diskusi & peluang kerja.</p>
+  
+  <form action="https://formsubmit.co/dhiazsastra87@gmail.com" method="POST">
+    <!-- anti spam -->
+    <input type="hidden" name="_captcha" value="false">
+    <!-- redirect setelah submit -->
+    <input type="hidden" name="_next" value="https://dhiazportofolio.vercel.app/thankyou.html">
+
+    <input type="text" name="nama" placeholder="Nama" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <textarea name="pesan" placeholder="Pesan kamu..." required></textarea>
+    <button type="submit">Kirim</button>
+  </form>
     <div class="socials">
       <a href="https://github.com/Ryu-D-9" target="_blank">GitHub</a>
       <a href="https://www.linkedin.com/in/dhiaz-bagus-normansyah-a16438215?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank">LinkedIn</a>

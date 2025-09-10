@@ -19,7 +19,7 @@ async function findRecipes(ingredients) {
   results.innerHTML = "<p>Sedang mencari resep...</p>";
 
   try {
-    const res = await fetch(`ResepAI/api/gemini?prompt=${encodeURIComponent(ingredients)}`);
+    const res = await fetch(`/api/gemini?prompt=${encodeURIComponent(ingredients)}`);
     const data = await res.json();
 
     // Cek hasil balik

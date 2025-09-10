@@ -1,5 +1,5 @@
 async function findRecipes(ingredients) {
-  const res = await fetch(`/.netlify/functions/gemini.js=${encodeURIComponent("Bahan: " + ingredients)}`);
+  const res = await fetch(`/.netlify/functions/gemini?prompt=${encodeURIComponent("Bahan: " + ingredients)}`);
   const data = await res.json();
   console.log(data);
 }

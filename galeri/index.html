@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galeri Senja</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- AOS untuk animasi scroll -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>📸 Galeri Senja</h1>
+    <p>Beberapa potret senja favorit saya</p>
+  </header>
+
+  <section class="gallery">
+    <img src="aset/WhatsApp Image 2025-09-10 at 23.32.31.jpeg" alt="Senja 1" data-aos="fade-right">
+    <img src="aset/WhatsApp Image 2025-09-10 at 23.32.32.jpeg" alt="Senja 2" data-aos="fade-left">
+    <img src="aset/WhatsApp Image 2025-09-10 at 23.32.33.jpeg" alt="Senja 3" data-aos="fade-right">
+    <img src="aset/WhatsApp Image 2025-09-10 at 23.32.34.jpeg" alt="Senja 4" data-aos="fade-left">
+     <img src="aset/WhatsApp Image 2025-09-10 at 23.32.32 (1).jpeg"Senja 3" data-aos="fade-right">
+    <img src="aset/WhatsApp Image 2025-09-10 at 23.32.33 (1).jpeg" alt="Senja 4" data-aos="fade-left">
+     <img src="aset/WhatsApp Image 2025-09-10 at 23.32.33 (2).jpeg" alt="Senja 3" data-aos="fade-right">
+    <img src="aset/WhatsApp Image 2025-09-10 at 23.32.34 (1).jpeg" alt="Senja 4" data-aos="fade-left">
+     <img src="aset/WhatsApp Image 2025-09-10 at 23.32.34 (2).jpeg" alt="Senja 3" data-aos="fade-right">
+    <img src="aset/WhatsApp Image 2025-09-10 at 23.32.35 (1).jpeg" alt="Senja 4" data-aos="fade-left">
+     <img src="aset/WhatsApp Image 2025-09-10 at 23.32.35 (2).jpeg"Senja 3" data-aos="fade-right">
+    <img src="aset/WhatsApp Image 2025-09-10 at 23.32.35 (3).jpeg" alt="Senja 4" data-aos="fade-left">
+     <img src="aset/WhatsApp Image 2025-09-10 at 23.32.37.jpeg" alt="Senja 3" data-aos="fade-right">
+    <img src="aset/WhatsApp Image 2025-09-10 at 23.32.35.jpeg" alt="Senja 4" data-aos="fade-left">
+  </section>
+
+  <!-- Modal untuk full size -->
+  <div id="modal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="modalImg">
+    <div id="caption"></div>
+  </div>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>AOS.init({ duration: 800, once: true });</script>
+  <script src="script.js"></script>
+</body>
+</html>

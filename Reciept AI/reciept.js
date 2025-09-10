@@ -1,5 +1,5 @@
 async function findRecipes(ingredients) {
-  const res = await fetch(`/.netlify/functions/gemini?prompt=${encodeURIComponent("Bahan: " + ingredients)}`);
+  const res = await fetch(`/api/gemini?prompt=${encodeURIComponent("Bahan: " + ingredients)}`);
   const data = await res.json();
   console.log(data);
 }
@@ -30,28 +30,27 @@ async function findRecipes(ingredients) {
   Jangan beri teks tambahan, hanya JSON valid.
   `;
 
+export default async function handler(req, res) {
+  const prompt = req.query.prompt || "Buatkan resep sederhana";
+
   try {
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`,
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${process.env.GEMINI_API_KEY}`,
       {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }]
         })
       }
     );
 
-    const data = await res.json();
-    const text = data.candidates[0].content.parts[0].text;
-
-    // coba parse JSON
-    const recipes = JSON.parse(text);
-    renderRecipes(recipes);
+    const data = await response.json();
+    res.status(200).json(data);
 
   } catch (err) {
-    results.innerHTML = `<p>❌ Gagal mengambil resep. Cek API key atau response.</p>`;
     console.error(err);
+    res.status(500).json({ error: "Gagal memanggil Gemini API" });
   }
 }
 

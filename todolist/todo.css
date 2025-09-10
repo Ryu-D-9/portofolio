@@ -1,0 +1,54 @@
+  :root{
+    --bg:#0f1220; --panel:#151a2e; --text:#e9edff; --muted:#9aa3c7;
+    --brand:#7c5cff; --ok:#2ec5ff; --border:rgba(255,255,255,.08);
+    --danger:#ff6b6b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial;background:var(--bg);color:var(--text)}
+  .wrap{max-width:780px;margin:32px auto;padding:0 24px}
+  h1{margin:0 0 16px}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:20px}
+
+  /* FORM */
+  .row{display:grid;grid-template-columns:1fr 200px auto;gap:12px}
+  input[type=text], input[type=date]{
+    padding:14px;border-radius:14px;border:1px solid var(--border);
+    background:#0b1020;color:var(--text);outline:none
+  }
+  button{
+    border:none;border-radius:14px;padding:14px 18px;
+    background:linear-gradient(90deg,var(--brand),var(--ok));color:#0b1020;
+    font-weight:700;cursor:pointer
+  }
+  button.ghost{background:transparent;color:var(--text);outline:1px solid var(--border)}
+  button.danger{background:var(--danger);color:#1a0c0c}
+
+  /* META */
+  .meta{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-top:16px;flex-wrap:wrap}
+  .filters{display:flex;gap:10px;flex-wrap:wrap}
+  small{color:var(--muted)}
+
+  /* LIST */
+  ul{list-style:none;margin:18px 0 0;padding:0}
+  li{
+    display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;
+    padding:12px 14px;border-radius:14px
+  }
+  li:hover{background:rgba(255,255,255,.03)}
+  .title{outline:none;border:none;background:transparent;color:var(--text);width:100%}
+  .title.done{color:var(--muted);text-decoration:line-through}
+  .date{font-size:12px;color:var(--muted)}
+  .badge{font-size:11px;padding:3px 8px;border-radius:999px;border:1px solid var(--border);color:#cfe3ff}
+  .badge.overdue{background:rgba(255,107,107,.12);color:#ffd2d2;border-color:#ffb3b3}
+  .badge.today{background:rgba(46,197,255,.12);color:#d5f4ff}
+
+  /* MOBILE TWEAKS */
+  @media (max-width: 768px){
+    .wrap{padding:0 28px}               /* lebih lega di HP */
+    .card{padding:22px}
+    .row{grid-template-columns:1fr;gap:10px} /* form jadi vertikal */
+    button, input[type=text], input[type=date]{width:100%}
+    .meta{gap:10px}
+    .filters{width:100%}
+    .filters > *{flex:1}
+  }

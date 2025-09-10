@@ -1,20 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weather App</title>
+  <title>Weather App Upgrade</title>
   <link rel="stylesheet" href="cuaca.css">
 </head>
 <body>
-  <div class="weather-app">
-    <h1>Weather App⛅</h1>
-    <div class="input-container">
+  <div class="container">
+<h1 class="weather-title">
+  Ramalan Cuaca
+  <span class="icon sun">☀️</span>
+  <span class="icon cloud">☁️</span>
+</h1>
+    <div class="search">
       <input type="text" id="cityInput" placeholder="Masukkan nama kota...">
       <button id="searchBtn">Cari</button>
     </div>
-    <div id="weatherResult"></div>
+    <div id="weather" class="card"></div>
+    <div id="forecast" class="forecast"></div>
   </div>
+
   <script src="cuaca.js"></script>
 </body>
 </html>

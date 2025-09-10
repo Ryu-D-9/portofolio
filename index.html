@@ -1,97 +1,160 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portofolio Dhiaz</title>
-  <link rel="stylesheet" href="style.css"
-  <style>
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio — Dhiaz</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header>
-    <h1></h1>
-    <nav>
-      <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Categories</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
+  <!-- Header / Navbar -->
+  <header class="header">
+    <a href="#" class="brand">My portofolio<span>.</span></a>
+    <nav class="nav" id="nav">
+      <a href="#home">Home</a>
+      <a href="#projects">Projects</a>
+      <a href="#about">About</a>
+      <a href="#contact" class="cta">Contact</a>
     </nav>
+    <button class="burger" id="burger" aria-label="Menu">&#9776;</button>
   </header>
-  <div class="hero">Halo, Selamat Datang👋</div>
-  <div class="container">
-    <h2>My Project</h2>
-    <div class="search-bar">
-      <input type="text" id="search" placeholder="Cari sesuatu..">
-      <select id="category">
-        <option value="all">All Categories</option>
-        <option value="technology">none</option>
-        <option value="travel">none</option>
-        <option value="food">none</option>
-        <option value="health">none</option>
-      </select>
-      <button onclick="filterPosts()">Search</button>
-    </div>
-    <div class="blog-grid" id="blogGrid">
-      <div class="card" data-category="taskInput">
-        <img src="assets/download.jpg" alt="">
-        <div class="card-content">
-          <h3>To-Do-List</h3>
-          <p>Aplikasi sederhana untuk mencatat daftar tugas.</p>
-          <a href="todo.html" class="btn">Lihat Project</a>
-        </div>
-      </div>
-      <div class="card" data-category="weather-app">
-        <img src="assets/istockphoto-1248152858-170667a.jpg" alt="">
-        <div class="card-content">
-          <h3>Weather App⛅</h3>
-          <p>Aplikasi untuk menampilkan cuaca berdasarkan lokasi.</p>
-          <a href="cuaca.html" class="btn">Lihat Project</a>
-        </div>
-      </div>
-      <div class="card" data-category="calculator">
-        <img src="assets/kalkulator.jpg" alt="">
-        <div class="card-content">
-          <h3>Calculator</h3>
-          <p>Aplikasi untuk menghitung sederhana.</p>
-          <a href="kalkulator.html" class="btn">Lihat Project</a>
-        </div>
-      </div>
-      <div class="card" data-category="biodata">
-        <img src="assets/istockphoto-609032156-2048x2048.jpg" alt="">
-        <div class="card-content">
-          <h3>New Portofolio</h3>
-          <p>New Ui dar portofolio Saya.</p>
-          <a href="Advanced Portofolio/index.html" class="btn">Lihat Project</a>
-        </div>
+
+  <!-- Hero -->
+  <section id="home" class="hero container">
+    <div class="hero-text">
+      <h1>Dhiaz Bagus Normansyah</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vitae massa eu arcu porta molestie. Sed sodales magna id magna semper elementum. Vivamus tincidunt quam non ultricies elementum. Ut eget nunc eros. Vestibulum mattis enim mollis metus fringilla, eu finibus risus congue. Praesent vitae commodo lectus, sed fermentum enim. Nullam convallis pharetra finibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis molestie ex sed massa aliquet, pharetra mattis massa condimentum. Praesent mauris ante, molestie a diam nec, lobortis lacinia ante. Praesent ligula ante, placerat sed erat vel, vulputate hendrerit erat.
+
+Pellentesque habitant morbi tristique senectus et netus et malesuada .</p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn">Lihat Project</a>
+        <a href="#contact" class="btn ghost">Kontak</a>
       </div>
     </div>
-    <div class="comment-box">
-      <h3>Leave a Comment</h3>
-      <textarea placeholder="Write your comment..."></textarea>
-      <button>Post Comment</button>
-    </div>
+
+<div class="photo-wrapper">
+  <img src="Advanced Portofolio/aset/WhatsApp Image 2025-09-10 at 00.47.09.png" alt="Foto Saya" class="profile-photo">
+  <div class="photo-overlay">
+    <p></p>
   </div>
-  <footer>
-    <p>&copy; 2025 Dhiaz | All Rights Reserved</p>
+</div>
+</div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="section container">
+    <div class="section-head">
+      <h2>Projects</h2>
+      <p>Beberapa karya terbaru. Klik untuk demo.</p>
+    </div>
+
+    <div class="grid">
+      <article class="card">
+        <img src="https://picsum.photos/600/400?random=1" alt="Preview project">
+        <div class="card-body">
+          <h3>To-Do List (LocalStorage)</h3>
+          <p>Aplikasi catat tugas dengan simpan otomatis di browser.</p>
+          <div class="tags">
+            <span>HTML</span><span>CSS</span><span>JS</span>
+          </div>
+          <div class="actions">
+            <a href="todolist/todo.html" target="_blank" class="btn small">Lihat</a>
+            <a href="#" target="_blank" class="btn ghost small">Code</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://picsum.photos/600/400?random=2" alt="Preview project">
+        <div class="card-body">
+          <h3>Weather App (API)</h3>
+          <p>Ambil cuaca realtime dengan OpenWeatherMap, UI ringan.</p>
+          <div class="tags">
+            <span>JS</span><span>API</span><span>Responsive</span>
+          </div>
+          <div class="actions">
+            <a href="cuaca/cuaca.html" target="_blank" class="btn small">Lihat</a>
+            <a href="#" target="_blank" class="btn ghost small">Code</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="Advanced Portofolio/aset/canva-delicious-food-on-the-table-MAEa_b6nY9g.jpg" alt="Preview project">
+        <div class="card-body">
+          <h3>Recipe Finder</h3>
+          <p>Cari resep berdasarkan bahan. Tampilkan negara asal & instruksi.</p>
+          <div class="tags">
+            <span>API</span><span>UX</span><span>SPA</span>
+          </div>
+          <div class="actions">
+            <a href="/Reciept AI/index.html" target="_blank" class="btn small">Lihat</a>
+            <a href="#" target="_blank" class="btn ghost small">Code</a>
+          </div>
+        </div>
+      </article>
+
+            <article class="card">
+        <img src="klontong/WhatsApp Image 2025-09-10 at 20.48.40.jpeg" alt="Preview project">
+        <div class="card-body">
+          <h3>klontong</h3>
+          <p>Sebuah Marketplace portofolio.</p>
+          <div class="tags">
+            <span>API</span><span>UX</span><span>SPA</span>
+          </div>
+          <div class="actions">
+            <a href="klontong/klontong.html" target="_blank" class="btn small">Lihat</a>
+            <a href="#" target="_blank" class="btn ghost small">Code</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="section container about">
+    <div class="about-text">
+      <h2>Tentang Saya</h2>
+      <p>Halo! Saya Front-End Developer pemula yang fokus pada website cepat, rapi, dan mudah digunakan. Saat ini mendalami React, pengelolaan state, dan integrasi API.</p>
+      <ul class="bullets">
+        <li>HTML, CSS (Flexbox/Grid), JavaScript</li>
+        <li>React (components, hooks), Vite</li>
+        <li>Git & GitHub, Deploy Netlify/Vercel</li>
+      </ul>
+    </div>
+    <div class="about-card">
+      <div class="pill">Sedang mencari: Junior Front-End</div>
+      <div class="pill">Kota: Bandung (onsite/hybrid)</div>
+      <div class="pill">Freelance: Available</div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="section container contact">
+    <h2>Kontak</h2>
+    <p>Terbuka untuk diskusi & peluang kerja.</p>
+    <form class="contact-form" onsubmit="return false;">
+      <input type="text" placeholder="Nama" required />
+      <input type="email" placeholder="Email" required />
+      <textarea rows="4" placeholder="Pesan"></textarea>
+      <button class="btn">Kirim</button>
+    </form>
+    <div class="socials">
+      <a href="https://github.com/Ryu-D-9" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/dhiaz-bagus-normansyah-a16438215?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank">LinkedIn</a>
+      <a href="dhiazsastra87@gmail.com">Email</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2025 Dhiaz — Built with ❤️</p>
+    </div>
   </footer>
-  <script>
-    function filterPosts(){
-      const search = document.getElementById('search').value.toLowerCase();
-      const category = document.getElementById('category').value;
-      const posts = document.querySelectorAll('.card');
-      posts.forEach(post => {
-        const title = post.querySelector('h3').innerText.toLowerCase();
-        const postCategory = post.getAttribute('data-category');
-        if((title.includes(search) || search === '') && (category === 'all' || category === postCategory)){
-          post.style.display = 'block';
-        } else {
-          post.style.display = 'none';
-        }
-      });
-    }
-  </script>
+
+  <script src="script.js"></script>
+  <button id="scrollTopBtn">⬆</button>
 </body>
 </html>

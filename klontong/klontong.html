@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini E-Commerce</title>
+  <link rel="stylesheet" href="klontong.css">
+</head>
+<body>
+  <header>
+    <h1>Klontong 🛒</h1>
+    <input type="text" id="search" placeholder="Cari produk...">
+    <button id="cartBtn">Keranjang (<span id="cartCount">0</span>)</button>
+  </header>
+
+  <main>
+    <div class="filters">
+      <button data-filter="all">Semua</button>
+      <button data-filter="fashion">Fashion</button>
+      <button data-filter="elektronik">Elektronik</button>
+      <button data-filter="makanan">Makanan</button>
+    </div>
+    <div id="productList" class="grid"></div>
+  </main>
+
+  <!-- Cart Modal -->
+  <div id="cartModal" class="modal">
+    <div class="modal-content">
+      <span id="closeCart" class="close">&times;</span>
+      <h2>Keranjang Belanja</h2>
+      <ul id="cartItems"></ul>
+      <p><strong>Total:</strong> Rp <span id="cartTotal">0</span></p>
+      <button id="checkoutBtn">Checkout</button>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div id="checkoutModal" class="modal">
+    <div class="modal-content">
+      <span id="closeCheckout" class="close">&times;</span>
+      <h2>Checkout</h2>
+      <form id="checkoutForm">
+        <input type="text" id="name" placeholder="Nama lengkap" required>
+        <input type="text" id="address" placeholder="Alamat" required>
+        <input type="tel" id="phone" placeholder="Nomor HP" required>
+        <button type="submit">Konfirmasi Pesanan</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Notifikasi -->
+  <div id="notification" class="notification">Pesanan berhasil dibuat ✅</div>
+
+  <script src="klontong.js"></script>
+</body>
+</html>

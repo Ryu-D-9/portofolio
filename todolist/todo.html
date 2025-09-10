@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>To-Do List (LocalStorage + Deadline)</title>
+,<link rel="stylesheet" href="todo.css">
+<style>
+
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>To-Do List</h1>
+    <div class="card">
+      <!-- FORM TAMBAH -->
+      <div class="row">
+        <input id="newTask" type="text" placeholder="Tambah tugas… (Enter untuk simpan)"/>
+        <input id="newDate" type="date" />
+        <button id="addBtn">Tambah</button>
+      </div>
+
+      <!-- META / AKSI -->
+      <div class="meta">
+        <small id="counter">0 tugas</small>
+        <div class="filters">
+          <button class="ghost" data-filter="all">All</button>
+          <button class="ghost" data-filter="active">Active</button>
+          <button class="ghost" data-filter="done">Done</button>
+          <button class="ghost" id="sortDate">Urutkan: Tanggal ↑</button>
+          <button class="ghost danger" id="clearDone">Hapus yang selesai</button>
+        </div>
+      </div>
+
+      <!-- LIST DIPINDAH KE BAWAH META -->
+      <ul id="list"></ul>
+    </div>
+  </div>
+
+<script src="todo.js"></script>
+</body>
+</html>

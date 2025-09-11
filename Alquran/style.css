@@ -1,0 +1,44 @@
+body {
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+              url("https://smpn11.bimakota.sch.id/upload/kontent/1715042937_29c5a75618668b2c84f1.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+header {
+  background: #2d6a4f;
+  color: rgba(255, 255, 255, 0.26);
+  padding: 10px 20px;
+  display: flex;
+  justify-content: c;
+  align-items: center;
+}
+
+.container {
+  max-width: 400px;
+  margin: 80px auto;
+  background: rgba(255, 255, 255, 0.055);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.1);
+}
+
+input, button, select {
+  display: block;
+  width: 100%;
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+button {
+  background: #2d6a4f;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+button:hover { opacity: 0.9; }
+
+main { padding: 20px; }
+section { margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 10px; }

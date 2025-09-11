@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Islamic Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="dashboard.js"></script>
+</head>
+<body>
+  <header>
+    <h2>🌙 Islamic Dashboard</h2>
+    <button id="logoutBtn">Logout</button>
+  </header>
+
+  <main>
+    <!-- Ayat Hari Ini -->
+    <section>
+      <h3>Ayat Hari Ini</h3>
+      <p id="ayatArab">Loading...</p>
+      <p id="ayatID"></p>
+      <button id="saveAyatBtn">Simpan ke Favorit</button>
+    </section>
+
+    <!-- Jadwal Sholat -->
+    <section>
+      <h3>Jadwal Sholat Hari Ini</h3>
+      <label for="citySelect">Pilih Kota:</label>
+      <select id="citySelect">
+        <option value="Jakarta">Jakarta</option>
+        <option value="Bandung">Bandung</option>
+        <option value="Surabaya">Surabaya</option>
+        <option value="Medan">Medan</option>
+        <option value="Makassar">Makassar</option>
+      </select>
+      <ul id="prayerTimes"></ul>
+      <p id="hijriDate"></p>
+    </section>
+
+    <!-- Search Surah -->
+    <section>
+      <h3>Cari Surah</h3>
+      <input type="number" id="surahInput" placeholder="Nomor Surah (1-114)">
+      <button id="searchSurahBtn">Cari</button>
+      <div id="surahResult"></div>
+    </section>
+
+    <!-- Search Hadits -->
+    <section>
+      <h3>Cari Hadits (Muslim)</h3>
+      <input type="number" id="hadithInput" placeholder="Nomor Hadits (1-3000)">
+      <button id="searchHadithBtn">Cari</button>
+      <div id="hadithResult"></div>
+      <button id="saveHadithBtn">Simpan ke Favorit</button>
+    </section>
+
+    <!-- Favorit -->
+    <section>
+      <h3>Favorit Saya</h3>
+      <ul id="favoritesList"></ul>
+    </section>
+  </main>
+</body>
+</html>

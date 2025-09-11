@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Generator Jadwal Karyawan</title>
+<style>
+  :root{
+    --brand:#7c5cff; --brand2:#2ec5ff; --ink:#222; --muted:#667;
+    --bg:#f6f7fb; --card:#fff; --danger:#ff6b6b; --sunday:#ffecec;
+  }
+  body{margin:0;font-family:system-ui,Segoe UI,Inter,Arial;background:var(--bg);color:var(--ink)}
+  header{padding:24px;text-align:center;color:#fff;background:linear-gradient(90deg,var(--brand),var(--brand2))}
+  h1{margin:0 0 6px}
+  .wrap{max-width:1100px;margin:18px auto;padding:0 16px}
+  .card{background:var(--card);border-radius:14px;box-shadow:0 6px 20px rgba(0,0,0,.05);padding:18px;margin-bottom:16px}
+
+  .grid{display:grid;gap:12px}
+  .grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  @media(max-width:760px){ .grid.cols-3,.grid.cols-2{grid-template-columns:1fr} }
+
+  label{display:flex;flex-direction:column;font-weight:600;font-size:14px;gap:6px}
+  input[type="text"],input[type="number"],input[type="month"]{
+    padding:10px 12px;border:1px solid #e3e6ef;border-radius:10px;outline:none;background:#fafbff
+  }
+  .btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:10px;padding:10px 14px;background:linear-gradient(90deg,var(--brand),var(--brand2));color:#fff;font-weight:700;cursor:pointer}
+  .btn.ghost{background:#eef1ff;color:#364}
+  .actions{display:flex;gap:8px;flex-wrap:wrap}
+
+  table{width:100%;border-collapse:collapse}
+  th,td{border:1px solid #eef1f6;padding:10px 12px;text-align:center}
+  th{background:var(--brand);color:#fff;position:sticky;top:0}
+  tr.sunday{background:var(--sunday)}
+  .hint{color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+  <header>
+    <h1>📅 Generator Jadwal Karyawan</h1>
+    <div class="hint">Aturan: sebelum libur masuk <b>Pagi</b>, sesudah libur masuk <b>Siang/Malam</b>. Satu orang <b>maks 1 shift/hari</b>.</div>
+  </header>
+
+  <div class="wrap">
+    <!-- STEP 1 -->
+    <div class="card">
+      <h3>1) Pengaturan Dasar</h3>
+      <div class="grid cols-3">
+        <label>Pilih Bulan & Tahun
+          <input type="month" id="month" value="">
+        </label>
+        <label>Jumlah Crew
+          <input type="number" id="crewCount" value="6" min="1">
+        </label>
+        <label>Jumlah Atasan
+          <input type="number" id="leaderCount" value="2" min="1">
+        </label>
+        <label>Jumlah Shift (2/3)
+          <input type="number" id="shifts" value="2" min="2" max="3">
+        </label>
+        <label>Libur / Karyawan per Bulan
+          <input type="number" id="holidays" value="4" min="0">
+        </label>
+        <label>Jumlah Crew per Shift
+          <input type="number" id="crewPerShift" value="2" min="1" max="6">
+        </label>
+      </div>
+      <div class="actions" style="margin-top:10px">
+        <button class="btn" id="next">Lanjut Input Nama</button>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="card" id="step2" style="display:none">
+      <h3>2) Masukkan Nama</h3>
+      <div class="grid cols-2" id="nameFields"></div>
+      <div class="actions" style="margin-top:12px">
+        <button class="btn" id="generate">Buat Jadwal</button>
+      </div>
+      <div class="hint">Kosongkan jika ingin nama default (Crew1, Atasan1, dst).</div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="card" id="output" style="display:none">
+      <div class="actions">
+        <button class="btn" id="dlCsv">⬇ Download CSV</button>
+        <button class="btn" id="dlXlsx">⬇ Download Excel</button>
+      </div>
+      <h3 style="margin:12px 0 8px">Jadwal Shift</h3>
+      <div id="schedule"></div>
+      <h3 style="margin:20px 0 8px">Daftar Karyawan Libur</h3>
+      <div id="offtable"></div>
+      <div class="hint">Catatan: jika tenaga tidak cukup untuk mengisi slot dengan aturan ketat, kolom akan berisi “(butuh orang)”.</div>
+    </div>
+  </div>
+
+  <!-- SheetJS untuk Excel -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script>
+    // ==== Util umum ====
+    const dayNames = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+    const fmtDate = (y,m,d)=>`${d}-${m}-${y}`;
+    const getDayName = (y,m,d)=> dayNames[new Date(y,m-1,d).getDay()];
+
+    // default month = bulan ini
+    (function initMonth(){
+      const inp = document.getElementById('month');
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth()+1).padStart(2,'0');
+      inp.value = `${y}-${m}`;
+    })();
+
+    let crews=[], leaders=[];
+    let crewCursor=0, leaderCursor=0; // round-robin pointer agar adil
+
+    // STEP 1 -> tampilkan field nama
+    document.getElementById('next').addEventListener('click', () => {
+      const c = +document.getElementById('crewCount').value || 0;
+      const L = +document.getElementById('leaderCount').value || 0;
+
+      const box = document.getElementById('nameFields');
+      box.innerHTML = "";
+
+      const colCrew = document.createElement('div');
+      const colLead = document.createElement('div');
+
+      let htmlCrew = `<h4>Crew</h4>`;
+      for(let i=1;i<=c;i++){
+        htmlCrew += `<label>Crew ${i}<input type="text" id="crew_${i}" placeholder="Nama Crew ${i}"></label>`;
+      }
+      colCrew.innerHTML = htmlCrew;
+
+      let htmlLead = `<h4>Atasan</h4>`;
+      for(let i=1;i<=L;i++){
+        htmlLead += `<label>Atasan ${i}<input type="text" id="lead_${i}" placeholder="Nama Atasan ${i}"></label>`;
+      }
+      colLead.innerHTML = htmlLead;
+
+      box.appendChild(colCrew);
+      box.appendChild(colLead);
+
+      document.getElementById('step2').style.display = 'block';
+      document.getElementById('output').style.display = 'none';
+    });
+
+    // STEP 2 -> generate jadwal
+    document.addEventListener('click', async (e)=>{
+      if(e.target.id !== 'generate') return;
+
+      const monthVal = document.getElementById('month').value;
+      const [year, month] = monthVal.split('-').map(Number);
+      const daysInMonth = new Date(year, month, 0).getDate();
+
+      const shifts = +document.getElementById('shifts').value;
+      const holidays = +document.getElementById('holidays').value;
+      const crewPerShift = +document.getElementById('crewPerShift').value;
+
+      const c = +document.getElementById('crewCount').value;
+      const L = +document.getElementById('leaderCount').value;
+
+      // build data orang + libur acak
+      crews = Array.from({length:c}, (_,i)=>({
+        name: (document.getElementById(`crew_${i+1}`).value || `Crew${i+1}`).trim(),
+        offDays: pickHolidays(daysInMonth, holidays)
+      }));
+      leaders = Array.from({length:L}, (_,i)=>({
+        name: (document.getElementById(`lead_${i+1}`).value || `Atasan${i+1}`).trim(),
+        offDays: pickHolidays(daysInMonth, holidays)
+      }));
+
+      // buat jadwal
+      const schedule = [];
+      crewCursor = 0; leaderCursor = 0; // reset rotasi
+
+      for(let d=1; d<=daysInMonth; d++){
+        const usedToday = new Set();  // <=== cegah double shift / hari
+        const row = { date: fmtDate(year,month,d), dayName: getDayName(year,month,d), shifts: [] };
+
+        for(let s=1; s<=shifts; s++){
+          const slot = [];
+
+          // === pilih Atasan (wajib 1) ===
+          const leader = pickPersonForShift(leaders, d, s, shifts, usedToday, 'leader');
+          if(leader){ slot.push(leader.name); usedToday.add(leader.name); }
+          else      { slot.push("(butuh atasan)"); }
+
+          // === pilih Crew (wajib N) ===
+          for(let k=0;k<crewPerShift;k++){
+            const crew = pickPersonForShift(crews, d, s, shifts, usedToday, 'crew');
+            if(crew){ slot.push(crew.name); usedToday.add(crew.name); }
+            else    { slot.push("(butuh orang)"); }
+          }
+
+          row.shifts.push(slot);
+        }
+        schedule.push(row);
+      }
+
+      renderTables(schedule, shifts, year, month);
+      document.getElementById('output').style.display = 'block';
+    });
+
+    // ===== Pemilihan orang dengan aturan prioritas & tanpa double shift =====
+    function pickPersonForShift(pool, day, s, totalShifts, usedSet, type){
+      // kandidat yang tidak libur & belum dipakai hari ini
+      const available = pool.filter(p => !p.offDays.includes(day) && !usedSet.has(p.name));
+      if(available.length===0) return null;
+
+      const desired = (person)=>{
+        if(person.offDays.includes(day+1)) return 1; // sebelum libur => Pagi
+        if(person.offDays.includes(day-1)) return (totalShifts===2?2:3); // sesudah libur
+        return null;
+      };
+
+      // prioritas: yang memang "seharusnya" shift hari ini
+      const pri = available.filter(p => desired(p) === s);
+      const poolToUse = pri.length ? pri : available;
+
+      // round-robin agar adil
+      if(type==='leader'){
+        const chosen = poolToUse[leaderCursor % poolToUse.length];
+        leaderCursor++;
+        return chosen;
+      }else{
+        const chosen = poolToUse[crewCursor % poolToUse.length];
+        crewCursor++;
+        return chosen;
+      }
+    }
+
+    // ===== Hari libur acak (simple) =====
+    function pickHolidays(days, n){
+      const s = new Set();
+      // cegah terlalu rapat: tambah jarak minimal 2 hari kalau memungkinkan
+      while(s.size < Math.min(n, days)){
+        const d = 1 + Math.floor(Math.random()*days);
+        // cek jarak
+        if(!s.has(d) && !s.has(d-1) && !s.has(d+1)) s.add(d);
+      }
+      return [...s].sort((a,b)=>a-b);
+    }
+
+    // ===== Render tabel jadwal & libur =====
+    function renderTables(schedule, shifts, year, month){
+      // Tabel jadwal
+      let html = `<div style="overflow:auto"><table><thead><tr><th>Tanggal</th><th>Hari</th>`;
+      for(let s=1;s<=shifts;s++) html += `<th>Shift ${s}</th>`;
+      html += `</tr></thead><tbody>`;
+
+      schedule.forEach(row=>{
+        const isSunday = row.dayName==="Minggu";
+        html += `<tr class="${isSunday?'sunday':''}"><td>${row.date}</td><td>${row.dayName}</td>`;
+        row.shifts.forEach(slot=>{
+          html += `<td>${slot.join(", ")}</td>`;
+        });
+        html += `</tr>`;
+      });
+      html += `</tbody></table></div>`;
+      document.getElementById('schedule').innerHTML = html;
+
+      // Tabel libur
+      let off = `<div style="overflow:auto"><table><thead><tr><th>Tanggal</th><th>Hari</th><th>Libur</th></tr></thead><tbody>`;
+      schedule.forEach(row=>{
+        const dayNum = parseInt(row.date.split('-')[0],10);
+        const names = [...crews, ...leaders]
+          .filter(p=>p.offDays.includes(dayNum))
+          .map(p=>p.name)
+          .join(", ");
+        off += `<tr><td>${row.date}</td><td>${row.dayName}</td><td>${names || "-"}</td></tr>`;
+      });
+      off += `</tbody></table></div>`;
+      document.getElementById('offtable').innerHTML = off;
+
+      // tombol download
+      document.getElementById('dlCsv').onclick = ()=> downloadCSV('#schedule table','jadwal_karyawan.csv');
+      document.getElementById('dlXlsx').onclick = ()=> downloadXLSX('#schedule table','jadwal_karyawan.xlsx');
+    }
+
+    // ===== Download helper =====
+    function downloadCSV(sel, filename){
+      const table = document.querySelector(sel);
+      const rows = [...table.querySelectorAll('tr')].map(tr=>{
+        const cells = [...tr.querySelectorAll('th,td')].map(td => `"${td.innerText.replace(/"/g,'""')}"`);
+        return cells.join(',');
+      }).join('\n');
+
+      const blob = new Blob([rows], {type:'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download=filename; a.click();
+      URL.revokeObjectURL(url);
+    }
+    function downloadXLSX(sel, filename){
+      const table = document.querySelector(sel);
+      const wb = XLSX.utils.table_to_book(table,{sheet:"Jadwal"});
+      XLSX.writeFile(wb, filename);
+    }
+  </script>
+</body>
+</html>

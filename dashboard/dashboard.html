@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Inventori</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- File dashboard.js khusus CRUD produk + Chart -->
+  <script defer src="dashboard.js"></script>
+</head>
+<body>
+  <header>
+    <h2>📦 Inventory Dashboard</h2>
+    <button id="logoutBtn">Logout</button>
+  </header>
+
+  <main>
+    <section>
+      <h3>Tambah Produk</h3>
+      <input type="text" id="productName" placeholder="Nama Produk">
+      <input type="number" id="productStock" placeholder="Stok">
+      <input type="number" id="productPrice" placeholder="Harga">
+      <button id="addProduct">Tambah</button>
+    </section>
+
+    <section>
+      <h3>Daftar Produk</h3>
+      <table id="productTable">
+        <thead>
+          <tr><th>Nama</th><th>Stok</th><th>Harga</th><th>Aksi</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section>
+      <h3>Grafik Stok Produk</h3>
+      <canvas id="stockChart"></canvas>
+    </section>
+
+    <section>
+      <h3>5 Produk dengan Stok Terendah</h3>
+      <canvas id="lowStockChart"></canvas>
+    </section>
+  </main>
+</body>
+</html>

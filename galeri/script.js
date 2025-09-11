@@ -1,16 +1,25 @@
-// Modal
+const images = document.querySelectorAll(".falling img");
+const imgs = document.querySelectorAll(".falling img");
 const modal = document.getElementById("modal");
 const modalImg = document.getElementById("modalImg");
-const caption = document.getElementById("caption");
-const span = document.getElementsByClassName("close")[0];
+const closeBtn = document.getElementById("close");
 
-document.querySelectorAll(".gallery img").forEach(img => {
+imgs.forEach(img => {
   img.addEventListener("click", () => {
-    modal.style.display = "block";
+    modal.style.display = "flex";
     modalImg.src = img.src;
-    caption.innerHTML = img.alt;
   });
 });
 
-span.onclick = () => { modal.style.display = "none"; };
-modal.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
+closeBtn.onclick = () => modal.style.display = "none";
+modal.onclick = (e) => { if(e.target === modal) modal.style.display = "none"; };
+images.forEach(img => {
+  // posisi horizontal random
+  img.style.left = Math.random() * 90 + "%";
+
+  // durasi jatuh random (6s – 12s)
+  img.style.animationDuration = (6 + Math.random() * 6) + "s";
+
+  // delay random supaya jatuhnya nggak barengan
+  img.style.animationDelay = Math.random() * 8 + "s";
+});

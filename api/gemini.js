@@ -13,13 +13,22 @@ export default async function handler(req, res) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }]
-        })
+          contents: [{ parts: [{ text: prompt }] }],
+        }),
       }
     );
 
     const data = await response.json();
-    res.status(200).json({ result: data.candidates?.[0]?.content?.parts?.[0]?.text || "" });
+
+    // DEBUG: kirim balik semua response biar bisa dicek strukturnya
+    console.log("Gemini Response:", data);
+
+    res.status(200).json({
+      raw: data, // biar bisa cek apa aja yang dibalikin
+      result:
+        data.candidates?.[0]?.content?.parts?.[0]?.text ||
+        "❌ Tidak ada teks dari Gemini",
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -1,19 +1,86 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Islamic Dashboard</title>
-  <link rel="stylesheet" href="style.css">
-  <script defer src="auth.js"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Qur'an & Hadits</title>
+<link rel="preconnect" href="https://api.quran.gading.dev">
+<link rel="preconnect" href="https://api.hadith.gading.dev">
+<link rel="stylesheet" href="style.css">
+<style>
+
+</style>
 </head>
 <body>
-  <div class="container">
-    <h2>Login ke Islamic Dashboard</h2>
-    <input type="email" id="email" placeholder="Email">
-    <input type="password" id="password" placeholder="Password">
-    <button id="loginBtn">Login</button>
-    <button id="registerBtn">Register</button>
+
+<header>
+  <div class="wrap">
+    <div class="topbar">
+      <h1>📖 Al-Qur’an & Hadits</h1>
+      <div class="search">
+        <!-- search by nomor atau nama -->
+        <input id="search" placeholder="Cari: '2' / 'Al-Baqarah' / 'baqarah' ..." />
+      </div>
+      <div class="switch">
+        <button id="tabQuran" class="active">Al-Qur’an</button>
+        <button id="tabHadith">Hadits</button>
+      </div>
+    </div>
+
+    <!-- quick chips -->
+    <div class="tabs">
+      <span class="chip" data-surah="36">Yasin</span>
+      <span class="chip" data-surah="56">Al-Waqi’ah</span>
+      <span class="chip" data-surah="67">Al-Mulk</span>
+      <span class="chip" data-surah="18">Al-Kahfi</span>
+      <span class="chip" data-surah="55">Ar-Rahman</span>
+      <span class="chip" data-surah="2:255">Ayat Kursi</span>
+    </div>
   </div>
+</header>
+
+<!-- Jadwal Sholat -->
+<div class="pray-card" id="prayCard">
+  <h2>🕌 Jadwal Sholat Hari Ini</h2>
+  <p id="location">Mendeteksi lokasi...</p>
+  <ul id="prayTimes"></ul>
+</div>
+
+<main class="wrap">
+  <!-- GRID SURAH -->
+  <section id="quranSection">
+    <div id="grid" class="grid"></div>
+  </section>
+
+  <!-- HADITS -->
+  <section id="hadithSection" class="hadits">
+    <div class="form">
+      <select id="book">
+        <option value="bukhari">Bukhari</option>
+        <option value="muslim">Muslim</option>
+      </select>
+      <input id="hadNo" type="number" placeholder="Nomor hadits (mis. 1-3000)"/>
+      <button id="findHadith" class="chip">Cari Hadits</button>
+    </div>
+    <div id="hadithResult" style="margin-top:14px;"></div>
+  </section>
+</main>
+
+<!-- Drawer detail surah -->
+<div id="drawer" class="drawer" role="dialog" aria-modal="true">
+  <div class="sheet">
+    <div class="head">
+      <button id="close" class="chip">Tutup</button>
+      <h2 id="title"></h2>
+      <small id="subtitle" style="color:var(--muted)"></small>
+    </div>
+    <div id="ayahList"></div>
+  </div>
+</div>
+<!-- Tombol Toggle Tema -->
+<button id="themeToggle" class="theme-toggle">🌙</button>
+<script src="script.js"></script>
+ 
 </body>
+
 </html>

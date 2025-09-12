@@ -1,44 +1,306 @@
-body {
-  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-              url("https://smpn11.bimakota.sch.id/upload/kontent/1715042937_29c5a75618668b2c84f1.jpg");
-  background-size: cover;
-  background-position: center;
+/* Default tema gelap */
+:root {
+  --bg: #0f1322;
+  --card: #161b2f;
+  --soft: #1b2140;
+  --text: #e9edff;
+  --muted: #9aa3c7;
+  --brand: #7c5cff;
+  --brand2: #2ec5ff;
+  --chip: #203056;
+  --border: rgba(255,255,255,.08);
 }
 
-header {
-  background: #2d6a4f;
-  color: rgba(255, 255, 255, 0.26);
-  padding: 10px 20px;
+/* Tema terang */
+[data-theme="light"] {
+  --bg: #f7f7f7;
+  --card: #ffffff;
+  --soft: #f1f1f1;
+  --text: #222;
+  --muted: #555;
+  --brand: #0077ff;
+  --brand2: #00c3ff;
+  --chip: #e0e0e0;
+  --border: rgba(0,0,0,.1);
+}
+
+/* Tombol floating */
+.theme-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
   display: flex;
-  justify-content: c;
   align-items: center;
-}
-
-.container {
-  max-width: 400px;
-  margin: 80px auto;
-  background: rgba(255, 255, 255, 0.055);
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,.1);
-}
-
-input, button, select {
-  display: block;
-  width: 100%;
-  margin: 8px 0;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-button {
-  background: #2d6a4f;
-  color: white;
-  border: none;
+  justify-content: center;
+  font-size: 20px;
   cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,.3);
+  transition: background 0.3s, transform 0.2s;
+  z-index: 100;
 }
-button:hover { opacity: 0.9; }
+.theme-toggle:hover {
+  transform: scale(1.1);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,system-ui,Segoe UI,Arial;
+  background:var(--bg);
+  color:var(--text);
+}
 
-main { padding: 20px; }
-section { margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 10px; }
+/* header */
+header{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:linear-gradient(,#0f1322,#0f1322ee 60%,#0f132200);
+  backdrop-filter: blur(6px);
+  border-bottom:1px solid var(--border);
+}
+.wrap{max-width:1100px;margin:0 auto;padding:18px 16px}
+.topbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+h1{margin:0;font-size:22px;letter-spacing:.5px}
+
+/* search */
+.search{flex:1;display:flex;gap:8px}
+.search input{
+  flex:1;
+  background:var(--soft);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:12px 14px;
+  color:var(--text);
+  outline:none
+}
+
+/* tabs */
+.tabs{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.chip{
+  background:var(--chip);
+  border:1px solid var(--border);
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer
+}
+.chip:hover{outline:1px solid #2ec5ff55}
+.switch{margin-left:auto;display:flex;gap:8px}
+.switch button{
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:10px 14px;
+  border-radius:12px;
+  cursor:pointer
+}
+.switch .active{
+  background:linear-gradient(90deg,var(--brand),var(--brand2));
+  color:#0b1020;
+  border:none
+}
+
+/* grid surah */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:16px}
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:14px;
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:10px;
+  align-items:center;
+  cursor:pointer;
+  transition:.15s transform
+}
+.card:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.num{
+  width:36px;height:36px;
+  display:grid;place-items:center;
+  border-radius:10px;
+  background:linear-gradient(180deg,#25315a,#1a2446);
+  color:#9cc0ff;font-weight:700
+}
+.meta h3{margin:0 0 4px;font-size:16px}
+.meta small{color:var(--muted)}
+.arab{
+  font-family:"Scheherazade New","Noto Naskh Arabic",serif;
+  font-size:22px;
+  opacity:.9
+}
+
+/* ===== Drawer Panel Detail Surah ===== */
+.drawer {
+  position: fixed;
+  inset: 0;
+  display: none;
+  background: rgba(0,0,0,.35); /* overlay */
+  z-index: 100;
+}
+.drawer.open {
+  display: block;
+}
+
+.sheet {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: min(780px, 100%);
+  background: var(--bg);              /* ikut theme */
+  border-left: 1px solid var(--border);
+  padding: 16px 0;
+  overflow-y: auto;
+  box-shadow: -5px 0 20px rgba(0,0,0,.3);
+}
+
+/* header dalam drawer */
+.sheet header {
+  position: sticky;
+  top: 0;
+  background: var(--card);            /* ikut theme */
+  border-bottom: 1px solid var(--border);
+  padding: 12px 16px;
+  z-index: 5;
+}
+
+.sheet .head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sheet h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.sheet small {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* ayat */
+.ayah {
+  padding: 12px 16px;
+  border-top: 1px dashed var(--border);
+  scroll-margin-top: 100px;           /* biar ayat 1 nggak ketutupan header */
+}
+
+.ayah .ar {
+  font-family: "Scheherazade New","Noto Naskh Arabic",serif;
+  font-size: 26px;
+  line-height: 1.7;
+}
+
+.ayah .id {
+  color: var(--text);
+  margin-top: 6px;
+  font-size: 15px;
+}
+
+.ayah .row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.ayah button {
+  border: none;
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: linear-gradient(90deg, var(--brand), var(--brand2));
+  color: #0b1020;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.ayah button:hover {
+  transform: scale(1.05);
+}
+
+.ayah audio {
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* ✅ tambahan agar scroll ke ayat tidak ketutupan header */
+.ayah{
+  scroll-margin-top:90px;
+}
+
+.ayah .ar{
+  font-family:"Scheherazade New","Noto Naskh Arabic",serif;
+  font-size:26px;
+  line-height:1.7
+}
+.ayah .id{color:var(--muted);margin-top:6px}
+.ayah .row{display:flex;gap:10px;align-items:center;margin-top:8px}
+.ayah button{
+  border:none;border-radius:10px;
+  padding:8px 10px;
+  background:linear-gradient(90deg,var(--brand),var(--brand2));
+  color:#0b1020;font-weight:600;cursor:pointer
+}
+.ayah audio{width:100%}
+
+/* hadits */
+.hadits{display:none}
+.hadits.active{display:block}
+.hadits .form{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+select, .hadits input{
+  background:var(--soft);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:10px 12px;
+  color:var(--text);
+  outline:none
+}
+.hadits .card{cursor:default}
+.arabic{
+  font-family:"Scheherazade New","Noto Naskh Arabic",serif;
+  font-size:22px;
+  line-height:1.8
+}
+
+/* responsive */
+@media (max-width:680px){
+  .search input{padding:11px}
+  .num{width:32px;height:32px}
+  .meta h3{font-size:15px}
+}
+
+/* Jadwal Sholat */
+.pray-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  margin-top: 16px;
+  text-align: center;
+}
+.pray-card h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  color: var(--brand2);
+}
+.pray-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(100px,1fr));
+  gap: 8px;
+}
+.pray-card li {
+  background: var(--soft);
+  padding: 10px;
+  border-radius: 12px;
+  font-size: 14px;
+}

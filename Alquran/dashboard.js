@@ -119,3 +119,17 @@ document.getElementById("citySelect").addEventListener("change", (e) => {
 getRandomAyat();
 getPrayerTimes("Bandung");
 renderFavorites();
+
+    /* ===== Digital Clock ===== */
+    function updateClock() {
+      let now = new Date();
+      let hours = now.getHours().toString().padStart(2, '0');
+      let minutes = now.getMinutes().toString().padStart(2, '0');
+      let seconds = now.getSeconds().toString().padStart(2, '0');
+      let day = now.toLocaleDateString('en-US', { weekday: 'long' });
+      let date = now.toLocaleDateString('en-US', { day: '2-digit', month: 'long', year: 'numeric' });
+      document.getElementById("clock").textContent = `${hours}:${minutes}:${seconds}`;
+      document.getElementById("date").textContent = `${day}, ${date}`;
+    }
+        setInterval(updateClock, 1000);
+    updateClock();

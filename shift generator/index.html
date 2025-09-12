@@ -25,7 +25,6 @@
     padding:10px 12px;border:1px solid #e3e6ef;border-radius:10px;outline:none;background:#fafbff
   }
   .btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:10px;padding:10px 14px;background:linear-gradient(90deg,var(--brand),var(--brand2));color:#fff;font-weight:700;cursor:pointer}
-  .btn.ghost{background:#eef1ff;color:#364}
   .actions{display:flex;gap:8px;flex-wrap:wrap}
 
   table{width:100%;border-collapse:collapse}
@@ -33,12 +32,13 @@
   th{background:var(--brand);color:#fff;position:sticky;top:0}
   tr.sunday{background:var(--sunday)}
   .hint{color:var(--muted);font-size:13px}
+  .warn{color:#ffb454}
 </style>
 </head>
 <body>
   <header>
     <h1>📅 Generator Jadwal Karyawan</h1>
-    <div class="hint">Aturan: sebelum libur masuk <b>Pagi</b>, sesudah libur masuk <b>Siang/Malam</b>. Satu orang <b>maks 1 shift/hari</b>.</div>
+    <div class="hint">Aturan otomatis: anti double-shift, 5 kerja→1 libur, weekend limit, hari wajib masuk (1/15/16/akhir bulan), rotasi sebelum/ sesudah libur.</div>
   </header>
 
   <div class="wrap">
@@ -58,11 +58,8 @@
         <label>Jumlah Shift (2/3)
           <input type="number" id="shifts" value="2" min="2" max="3">
         </label>
-        <label>Libur / Karyawan per Bulan
+        <label>Libur / Karyawan per Bulan (permintaan)
           <input type="number" id="holidays" value="4" min="0">
-        </label>
-        <label>Jumlah Crew per Shift
-          <input type="number" id="crewPerShift" value="2" min="1" max="6">
         </label>
       </div>
       <div class="actions" style="margin-top:10px">
@@ -90,168 +87,246 @@
       <div id="schedule"></div>
       <h3 style="margin:20px 0 8px">Daftar Karyawan Libur</h3>
       <div id="offtable"></div>
-      <div class="hint">Catatan: jika tenaga tidak cukup untuk mengisi slot dengan aturan ketat, kolom akan berisi “(butuh orang)”.</div>
+      <div class="hint">Jika tenaga kurang, sel berisi “(butuh atasan)”/“(butuh orang)”.</div>
     </div>
   </div>
 
-  <!-- SheetJS untuk Excel -->
+  <!-- SheetJS -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script>
-    // ==== Util umum ====
+    // ===== Util tanggal =====
     const dayNames = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
-    const fmtDate = (y,m,d)=>`${d}-${m}-${y}`;
+    const fmtDate = (y,m,d)=>`${String(d).padStart(2,"0")}-${String(m).padStart(2,"0")}-${y}`;
     const getDayName = (y,m,d)=> dayNames[new Date(y,m-1,d).getDay()];
 
-    // default month = bulan ini
+    // default month
     (function initMonth(){
-      const inp = document.getElementById('month');
       const now = new Date();
-      const y = now.getFullYear();
-      const m = String(now.getMonth()+1).padStart(2,'0');
-      inp.value = `${y}-${m}`;
+      document.getElementById('month').value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
     })();
 
-    let crews=[], leaders=[];
-    let crewCursor=0, leaderCursor=0; // round-robin pointer agar adil
+    let crews=[], leaders[];
 
-    // STEP 1 -> tampilkan field nama
+    // STEP 1 — tampilkan form nama
     document.getElementById('next').addEventListener('click', () => {
-      const c = +document.getElementById('crewCount').value || 0;
-      const L = +document.getElementById('leaderCount').value || 0;
-
+      const c = +document.getElementById('crewCount').value;
+      const L = +document.getElementById('leaderCount').value;
       const box = document.getElementById('nameFields');
       box.innerHTML = "";
 
-      const colCrew = document.createElement('div');
-      const colLead = document.createElement('div');
-
       let htmlCrew = `<h4>Crew</h4>`;
-      for(let i=1;i<=c;i++){
-        htmlCrew += `<label>Crew ${i}<input type="text" id="crew_${i}" placeholder="Nama Crew ${i}"></label>`;
-      }
-      colCrew.innerHTML = htmlCrew;
-
+      for(let i=1;i<=c;i++) htmlCrew += `<label>Crew ${i}<input type="text" id="crew_${i}" placeholder="Nama Crew ${i}"></label>`;
       let htmlLead = `<h4>Atasan</h4>`;
-      for(let i=1;i<=L;i++){
-        htmlLead += `<label>Atasan ${i}<input type="text" id="lead_${i}" placeholder="Nama Atasan ${i}"></label>`;
-      }
-      colLead.innerHTML = htmlLead;
-
-      box.appendChild(colCrew);
-      box.appendChild(colLead);
+      for(let i=1;i<=L;i++) htmlLead += `<label>Atasan ${i}<input type="text" id="lead_${i}" placeholder="Nama Atasan ${i}"></label>`;
+      box.innerHTML = `<div>${htmlCrew}</div><div>${htmlLead}</div>`;
 
       document.getElementById('step2').style.display = 'block';
       document.getElementById('output').style.display = 'none';
     });
 
-    // STEP 2 -> generate jadwal
-    document.addEventListener('click', async (e)=>{
-      if(e.target.id !== 'generate') return;
-
-      const monthVal = document.getElementById('month').value;
-      const [year, month] = monthVal.split('-').map(Number);
-      const daysInMonth = new Date(year, month, 0).getDate();
-
-      const shifts = +document.getElementById('shifts').value;
-      const holidays = +document.getElementById('holidays').value;
-      const crewPerShift = +document.getElementById('crewPerShift').value;
-
-      const c = +document.getElementById('crewCount').value;
-      const L = +document.getElementById('leaderCount').value;
-
-      // build data orang + libur acak
-      crews = Array.from({length:c}, (_,i)=>({
-        name: (document.getElementById(`crew_${i+1}`).value || `Crew${i+1}`).trim(),
-        offDays: pickHolidays(daysInMonth, holidays)
-      }));
-      leaders = Array.from({length:L}, (_,i)=>({
-        name: (document.getElementById(`lead_${i+1}`).value || `Atasan${i+1}`).trim(),
-        offDays: pickHolidays(daysInMonth, holidays)
-      }));
-
-      // buat jadwal
-      const schedule = [];
-      crewCursor = 0; leaderCursor = 0; // reset rotasi
-
-      for(let d=1; d<=daysInMonth; d++){
-        const usedToday = new Set();  // <=== cegah double shift / hari
-        const row = { date: fmtDate(year,month,d), dayName: getDayName(year,month,d), shifts: [] };
-
-        for(let s=1; s<=shifts; s++){
-          const slot = [];
-
-          // === pilih Atasan (wajib 1) ===
-          const leader = pickPersonForShift(leaders, d, s, shifts, usedToday, 'leader');
-          if(leader){ slot.push(leader.name); usedToday.add(leader.name); }
-          else      { slot.push("(butuh atasan)"); }
-
-          // === pilih Crew (wajib N) ===
-          for(let k=0;k<crewPerShift;k++){
-            const crew = pickPersonForShift(crews, d, s, shifts, usedToday, 'crew');
-            if(crew){ slot.push(crew.name); usedToday.add(crew.name); }
-            else    { slot.push("(butuh orang)"); }
-          }
-
-          row.shifts.push(slot);
-        }
-        schedule.push(row);
-      }
-
-      renderTables(schedule, shifts, year, month);
-      document.getElementById('output').style.display = 'block';
-    });
-
-    // ===== Pemilihan orang dengan aturan prioritas & tanpa double shift =====
-    function pickPersonForShift(pool, day, s, totalShifts, usedSet, type){
-      // kandidat yang tidak libur & belum dipakai hari ini
-      const available = pool.filter(p => !p.offDays.includes(day) && !usedSet.has(p.name));
-      if(available.length===0) return null;
-
-      const desired = (person)=>{
-        if(person.offDays.includes(day+1)) return 1; // sebelum libur => Pagi
-        if(person.offDays.includes(day-1)) return (totalShifts===2?2:3); // sesudah libur
-        return null;
-      };
-
-      // prioritas: yang memang "seharusnya" shift hari ini
-      const pri = available.filter(p => desired(p) === s);
-      const poolToUse = pri.length ? pri : available;
-
-      // round-robin agar adil
-      if(type==='leader'){
-        const chosen = poolToUse[leaderCursor % poolToUse.length];
-        leaderCursor++;
-        return chosen;
-      }else{
-        const chosen = poolToUse[crewCursor % poolToUse.length];
-        crewCursor++;
-        return chosen;
-      }
-    }
-
-    // ===== Hari libur acak (simple) =====
-    function pickHolidays(days, n){
+    // ===== Libur acak (permintaan bulan), blokir hari wajib, cegah >2 beruntun =====
+    function pickHolidays(daysInMonth, n){
       const s = new Set();
-      // cegah terlalu rapat: tambah jarak minimal 2 hari kalau memungkinkan
-      while(s.size < Math.min(n, days)){
-        const d = 1 + Math.floor(Math.random()*days);
-        // cek jarak
-        if(!s.has(d) && !s.has(d-1) && !s.has(d+1)) s.add(d);
+      const blocked = [1,15,16];
+      if(daysInMonth===30) blocked.push(30);
+      if(daysInMonth===31) blocked.push(31);
+
+      while(s.size < Math.min(n, daysInMonth - blocked.length)){
+        const d = 1 + Math.floor(Math.random()*daysInMonth);
+        if(blocked.includes(d)) continue;
+        // cegah libur 3 hari berturut
+        if(s.has(d-1) && s.has(d-2)) continue;
+        if(s.has(d+1) && s.has(d+2)) continue;
+        if(!s.has(d)) s.add(d);
       }
       return [...s].sort((a,b)=>a-b);
     }
 
+    // ===== Preferensi shift terkait libur =====
+    function desiredShiftIndex(person, day, totalShifts){
+      // sebelum libur → prefer Pagi (index 1)
+      if (person.offDays.includes(day+1)) return 1;
+      // sesudah libur → prefer Siang (2) utk 2 shift, Malam (3) utk 3 shift
+      if (person.offDays.includes(day-1)) return (totalShifts===2 ? 2 : 3);
+      return null;
+    }
+
+    // ===== Hitung kapasitas per shift berdasar kondisi hari =====
+    function calcShiftCap(totalPeople, totalOff, shifts){
+      // default 3 per shift
+      if (totalOff === 2) {
+        // per shift → 2 (1 atasan + 1 crew)
+        return new Array(shifts).fill(2);
+      }
+      if (totalPeople >= 10 && shifts === 3 && totalOff === 3) {
+        // pola khusus: 3,3,2
+        return [3,3,2];
+      }
+      // default
+      return new Array(shifts).fill(3);
+    }
+
+    // ===== Generate Jadwal lengkap =====
+    function generateSchedule(cfg){
+      const {
+        year, month, daysInMonth, shifts, holidaysPerPerson,
+        crewNames, leaderNames
+      } = cfg;
+
+      crews = crewNames.map((name,i)=>({name: name||`Crew${i+1}`, offDays: []}));
+      leaders = leaderNames.map((name,i)=>({name: name||`Atasan${i+1}`, offDays: []}));
+
+      // permintaan libur acak/bulanan
+      crews.forEach(p=> p.offDays = pickHolidays(daysInMonth, holidaysPerPerson));
+      leaders.forEach(p=> p.offDays = pickHolidays(daysInMonth, holidaysPerPerson));
+
+      const everyone = [...crews, ...leaders];
+      const isLeader = new Set(leaders.map(x=>x.name));
+      const workStreak = Object.fromEntries(everyone.map(p=>[p.name,0]));
+      const lastShift = Object.fromEntries(everyone.map(p=>[p.name,null]));
+      const offStreak = Object.fromEntries(everyone.map(p=>[p.name,0])); // cegah 3 libur beruntun via permintaan harian
+
+      const schedule = [];
+
+      for(let d=1; d<=daysInMonth; d++){
+        const dayName = getDayName(year, month, d);
+        const weekend = (dayName==="Sabtu" || dayName==="Minggu");
+
+        // Tanggal wajib masuk (semua masuk)
+        const blocked = (d===1 || d===15 || d===16 ||
+                         (daysInMonth===30 && d===30) ||
+                         (daysInMonth===31 && d===31));
+
+        // Libur wajib karena 5 kerja → hari ini libur, kecuali blocked (ditunda)
+        const mustOff = new Set(
+          everyone.filter(p => workStreak[p.name] >= 5 && !blocked).map(p=>p.name)
+        );
+
+        // Kuota libur harian (di luar mustOff)
+        const baseMax = (everyone.length <= 9 ? 2 : 3);
+        let maxVoluntary = baseMax;
+        if (weekend){
+          maxVoluntary = (shifts===2 ? 1 : 2);
+        }
+        // tidak ada libur pada hari blocked
+        if (blocked) maxVoluntary = 0;
+
+        // Permintaan libur per orang (kalender bulanan)
+        const requestedToday = new Set(
+          everyone.filter(p => p.offDays.includes(d)).map(p=>p.name)
+        );
+
+        // Bangun liburSet: mulai dari mustOff, lalu tambah request harian sampai kuota voluntary
+        const liburSet = new Set([...mustOff]);
+        // Tambah permintaan harian tapi hindari off 3x berturut
+        for (const p of everyone){
+          if (liburSet.size - mustOff.size >= maxVoluntary) break;
+          if (!requestedToday.has(p.name)) continue;
+          if (liburSet.has(p.name)) continue;
+          if (offStreak[p.name] >= 2) continue; // cegah 3 libur beruntun
+          liburSet.add(p.name);
+        }
+
+        // Hitung kapasitas tiap shift
+        const totalOff = liburSet.size;
+        const caps = calcShiftCap(everyone.length, totalOff, shifts); // array length=shifts, total orang per shift
+        const slots = [];
+        const usedToday = new Set(); // anti double shift
+
+        // Daftar kandidat awal per tipe
+        const availLeaders = leaders.filter(p => !liburSet.has(p.name));
+        const availCrews = crews.filter(p => !liburSet.has(p.name));
+
+        // Helper sortir kandidat berdasar preferensi libur
+        const sortedByPref = (arr, sIndex) => {
+          return [...arr].sort((a,b)=>{
+            const da = (desiredShiftIndex(a, d, shifts) === sIndex) ? 0 : 1;
+            const db = (desiredShiftIndex(b, d, shifts) === sIndex) ? 0 : 1;
+            const la = (lastShift[a.name] === sIndex) ? 1 : 0; // hindari sama dengan kemarin
+            const lb = (lastShift[b.name] === sIndex) ? 1 : 0;
+            return (da+la) - (db+lb);
+          });
+        };
+
+        for (let s=1; s<=shifts; s++){
+          const slotNames = [];
+          const cap = caps[s-1];       // total orang pada shift ini
+          const needCrew = Math.max(0, cap - 1); // 1 atasan + sisa crew
+
+          // === Pilih atasan ===
+          let leaderPick = sortedByPref(
+            availLeaders.filter(p => !usedToday.has(p.name)), s
+          )[0];
+          if (leaderPick){
+            slotNames.push(leaderPick.name);
+            usedToday.add(leaderPick.name);
+          } else {
+            slotNames.push("(butuh atasan)");
+          }
+
+          // === Pilih crew ===
+          let filled = 0, guard=0;
+          const crewCandidates = availCrews.filter(p => !usedToday.has(p.name));
+          while (filled < needCrew && guard < 400){
+            guard++;
+            const pick = sortedByPref(
+              crewCandidates.filter(p => !usedToday.has(p.name)), s
+            )[0];
+            if (!pick) break;
+            slotNames.push(pick.name);
+            usedToday.add(pick.name);
+            filled++;
+          }
+
+          // Jika kurang, tandai butuh orang
+          while (slotNames.length < cap){
+            slotNames.push("(butuh orang)");
+          }
+
+          // Catat lastShift utk yang benar-benar kerja
+          slotNames.forEach(nm=>{
+            if (!nm.startsWith("(")) lastShift[nm] = s;
+          });
+
+          slots.push(slotNames);
+        }
+
+        // Update streak kerja/libur
+        const todayWorkers = new Set(slots.flat().filter(nm => !nm.startsWith("(")));
+        for (const p of everyone){
+          const nm = p.name;
+          const worked = todayWorkers.has(nm);
+          const offToday = liburSet.has(nm);
+          if (worked){
+            workStreak[nm] = offToday ? 0 : workStreak[nm] + 1;
+            offStreak[nm] = 0;
+          } else {
+            if (offToday) { workStreak[nm] = 0; offStreak[nm] += 1; }
+            else          { workStreak[nm] = 0; offStreak[nm] = 0; } // tidak dipakai = bukan kerja, reset streak kerja
+          }
+        }
+
+        schedule.push({
+          date: fmtDate(year, month, d),
+          dayName: dayName,
+          libur: [...liburSet],
+          slots
+        });
+      }
+
+      return schedule;
+    }
+
     // ===== Render tabel jadwal & libur =====
     function renderTables(schedule, shifts, year, month){
-      // Tabel jadwal
+      // Jadwal
       let html = `<div style="overflow:auto"><table><thead><tr><th>Tanggal</th><th>Hari</th>`;
       for(let s=1;s<=shifts;s++) html += `<th>Shift ${s}</th>`;
       html += `</tr></thead><tbody>`;
-
       schedule.forEach(row=>{
         const isSunday = row.dayName==="Minggu";
         html += `<tr class="${isSunday?'sunday':''}"><td>${row.date}</td><td>${row.dayName}</td>`;
-        row.shifts.forEach(slot=>{
+        row.slots.forEach(slot=>{
           html += `<td>${slot.join(", ")}</td>`;
         });
         html += `</tr>`;
@@ -259,20 +334,15 @@
       html += `</tbody></table></div>`;
       document.getElementById('schedule').innerHTML = html;
 
-      // Tabel libur
+      // Libur
       let off = `<div style="overflow:auto"><table><thead><tr><th>Tanggal</th><th>Hari</th><th>Libur</th></tr></thead><tbody>`;
       schedule.forEach(row=>{
-        const dayNum = parseInt(row.date.split('-')[0],10);
-        const names = [...crews, ...leaders]
-          .filter(p=>p.offDays.includes(dayNum))
-          .map(p=>p.name)
-          .join(", ");
-        off += `<tr><td>${row.date}</td><td>${row.dayName}</td><td>${names || "-"}</td></tr>`;
+        off += `<tr><td>${row.date}</td><td>${row.dayName}</td><td>${row.libur.join(", ")||"-"}</td></tr>`;
       });
       off += `</tbody></table></div>`;
       document.getElementById('offtable').innerHTML = off;
 
-      // tombol download
+      // download
       document.getElementById('dlCsv').onclick = ()=> downloadCSV('#schedule table','jadwal_karyawan.csv');
       document.getElementById('dlXlsx').onclick = ()=> downloadXLSX('#schedule table','jadwal_karyawan.xlsx');
     }
@@ -284,7 +354,6 @@
         const cells = [...tr.querySelectorAll('th,td')].map(td => `"${td.innerText.replace(/"/g,'""')}"`);
         return cells.join(',');
       }).join('\n');
-
       const blob = new Blob([rows], {type:'text/csv;charset=utf-8;'});
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a'); a.href=url; a.download=filename; a.click();
@@ -295,6 +364,33 @@
       const wb = XLSX.utils.table_to_book(table,{sheet:"Jadwal"});
       XLSX.writeFile(wb, filename);
     }
+
+    // ===== STEP 2 — Generate =====
+    document.addEventListener('click', (e)=>{
+      if(e.target.id !== 'generate') return;
+
+      const monthVal = document.getElementById('month').value;
+      const [year, month] = monthVal.split('-').map(Number);
+      const daysInMonth = new Date(year, month, 0).getDate();
+      const shifts = +document.getElementById('shifts').value;
+      const holidays = +document.getElementById('holidays').value;
+
+      const c = +document.getElementById('crewCount').value;
+      const L = +document.getElementById('leaderCount').value;
+
+      const crewNames = Array.from({length:c}, (_,i)=> (document.getElementById(`crew_${i+1}`)?.value || `Crew${i+1}`).trim());
+      const leaderNames = Array.from({length:L}, (_,i)=> (document.getElementById(`lead_${i+1}`)?.value || `Atasan${i+1}`).trim());
+
+      const schedule = generateSchedule({
+        year, month, daysInMonth, shifts,
+        holidaysPerPerson: holidays,
+        crewNames, leaderNames
+      });
+
+      renderTables(schedule, shifts, year, month);
+      document.getElementById('output').style.display = 'block';
+    });
+
   </script>
 </body>
 </html>

@@ -56,7 +56,7 @@ async function fetchForecast(city) {
   );
   const data = await res.json();
 
-  forecastDiv.innerHTML = "<h3>Prakiraan 5 Hari</h3>";
+  forecastDiv.innerHTML = "<h2>Prakiraan 5 Hari</h2>";
 
   // ambil 1 data per 24 jam (jam 12 siang)
   const daily = data.list.filter(item => item.dt_txt.includes("12:00:00"));

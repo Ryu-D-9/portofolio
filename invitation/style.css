@@ -1,0 +1,138 @@
+/* CSS Dasar & Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Georgia', serif;
+}
+body {
+    background-color: #f4f1eb;
+    color: #333;
+    overflow-x: hidden;
+}
+
+/* Halaman Sampul (Cover) */
+#cover {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://via.placeholder.com/400x800?text=Background+Foto') center/cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    z-index: 100;
+    transition: top 1s ease-in-out;
+}
+#cover h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+#cover p {
+    margin-bottom: 20px;
+}
+.btn-buka {
+    padding: 10px 20px;
+    background-color: #556b2f;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Konten Utama */
+#main-content {
+    display: none;
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Section General */
+section {
+    padding: 40px 20px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+section h2 {
+    font-size: 2rem;
+    color: #4a5c50;
+    margin-bottom: 20px;
+}
+
+/* Profil Mempelai */
+.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.profile img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 5px solid #d3cbb8;
+    margin-bottom: 10px;
+}
+
+/* Countdown */
+.countdown {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+.time-box {
+    background-color: #f4f1eb;
+    padding: 15px;
+    border-radius: 10px;
+    min-width: 70px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.time-box span {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Event Details */
+.event-card {
+    background-color: #e8ecef;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+.btn-map {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 8px 15px;
+    background-color: #5a7266;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+/* Wedding Gift */
+.bank-card {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 10px 0;
+    text-align: left;
+}
+.btn-salin {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}

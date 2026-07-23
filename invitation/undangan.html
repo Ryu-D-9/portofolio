@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan - Tomy & Fany</title>
+    <!-- Memanggil file CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Halaman Cover -->
+    <div id="cover">
+        <p>Walimatul 'Urs</p>
+        <h1>Tomy & Fany</h1>
+        <p>Kepada Yth. Bapak/Ibu/Saudara/i</p>
+        <button class="btn-buka" onclick="bukaUndangan()">Buka Undangan</button>
+    </div>
+
+    <!-- Konten Utama -->
+    <div id="main-content">
+        
+        <!-- Pembuka -->
+        <section id="home">
+            <h2>Groom & Bride</h2>
+            <p>Assalamualaikum wr. wb.</p>
+            <br>
+            <div class="profile">
+                <img src="https://via.placeholder.com/150" alt="Foto Mempelai Pria">
+                <h3>Muhammad Khatomi</h3>
+                <p>Putra dari Bapak X & Ibu Y</p>
+            </div>
+            <h1>&</h1>
+            <div class="profile">
+                <img src="https://via.placeholder.com/150" alt="Foto Mempelai Wanita">
+                <h3>Fany Ayu</h3>
+                <p>Putri dari Bapak A & Ibu B</p>
+            </div>
+        </section>
+
+        <!-- Save the Date -->
+        <section id="date">
+            <h2>Save The Date</h2>
+            <div class="countdown">
+                <div class="time-box"><span id="hari">00</span>Hari</div>
+                <div class="time-box"><span id="jam">00</span>Jam</div>
+                <div class="time-box"><span id="menit">00</span>Menit</div>
+                <div class="time-box"><span id="detik">00</span>Detik</div>
+            </div>
+        </section>
+
+        <!-- Acara -->
+        <section id="event">
+            <h2>Detail Acara</h2>
+            <div class="event-card">
+                <h3>Akad Nikah</h3>
+                <p>Sabtu, 5 September 2026</p>
+                <p>Pukul 07:00</p>
+                <a href="#" class="btn-map">Buka Google Maps</a>
+            </div>
+            <div class="event-card">
+                <h3>Resepsi</h3>
+                <p>Minggu, 5 Juli 2026</p>
+                <p>Pukul 10:00</p>
+                <a href="#" class="btn-map">Buka Google Maps</a>
+            </div>
+        </section>
+
+        <!-- Wedding Gift -->
+        <section id="gift">
+            <h2>Wedding Gift</h2>
+            <p>Doa restu Anda merupakan karunia yang sangat berarti.</p>
+            <div class="bank-card">
+                <h3>BNI</h3>
+                <p>Atas Nama: Muhammad Khatomi</p>
+                <p id="rek1">694676679</p>
+                <button class="btn-salin" onclick="salinRekening('rek1')">Salin Rekening</button>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Memanggil file JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

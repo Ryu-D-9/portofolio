@@ -839,39 +839,30 @@
   const tapHint = document.getElementById('tapHint');
   const curtainScene = document.getElementById('curtain-scene');
   var music = document.getElementById("bg-music");
-var musicBtn = document.getElementById("music-control");
+  var musicBtn = document.getElementById("music-control");
 
-  envelope.addEventListener('click', () => {
+envelope.addEventListener('click', () => {
     if (envelope.classList.contains('open')) return;
+
     envelope.classList.add('open');
     tapHint.style.opacity = '0';
 
-            music.play();
-        
-        // Menampilkan tombol kontrol musik di pojok kanan bawah
-        if (musicBtn) {
-            musicBtn.style.display = 'block';
-        }
-    }, 800);
+    music.play().catch(err => console.log(err));
 
-// Fungsi untuk Play / Pause Musik
-function toggleMusic() {
-    if (music.paused) {
-        music.play();
-        musicBtn.innerHTML = "🎵"; // Ikon saat musik menyala
-    } else {
-        music.pause();
-        musicBtn.innerHTML = "🔇"; // Ikon saat musik mati
+    if (musicBtn) {
+        musicBtn.style.display = 'block';
     }
-}
 
     setTimeout(() => {
-      cover.classList.add('hidden');
-      document.body.style.overflow = 'auto';
-      setTimeout(() => {
-        curtainScene.classList.add('opened');
-      }, 300);
+        cover.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+
+        setTimeout(() => {
+            curtainScene.classList.add('opened');
+        }, 300);
+
     }, 1400);
+});
 
 
   // lock scroll until envelope opened
@@ -895,7 +886,15 @@ function toggleMusic() {
   updateCountdown();
   setInterval(updateCountdown, 1000);
 
-  
+  function toggleMusic() {
+    if (music.paused) {
+        music.play();
+        musicBtn.innerHTML = "🔊";
+    } else {
+        music.pause();
+        musicBtn.innerHTML = "🔇";
+    }
+}
 </script>
 
 </body>

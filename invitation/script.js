@@ -35,3 +35,38 @@ var x = setInterval(function() {
         document.querySelector(".countdown").innerHTML = "Acara Telah Berlangsung";
     }
 }, 1000);
+
+// Deklarasi variabel musik
+var music = document.getElementById("bg-music");
+var musicBtn = document.getElementById("music-control");
+
+// Fungsi Membuka Undangan
+function bukaUndangan() {
+    document.getElementById('cover').style.top = '-100vh';
+    
+    setTimeout(() => {
+        document.getElementById('cover').style.display = 'none';
+        document.getElementById('main-content').style.display = 'block';
+        
+        // Memutar musik saat undangan dibuka
+        music.play();
+        
+        // Menampilkan tombol kontrol musik di pojok kanan bawah
+        if (musicBtn) {
+            musicBtn.style.display = 'block';
+        }
+    }, 800);
+}
+
+// Fungsi untuk Play / Pause Musik
+function toggleMusic() {
+    if (music.paused) {
+        music.play();
+        musicBtn.innerHTML = "🎵"; // Ikon saat musik menyala
+    } else {
+        music.pause();
+        musicBtn.innerHTML = "🔇"; // Ikon saat musik mati
+    }
+}
+
+// ... (Biarkan fungsi salinRekening dan hitung mundur/Countdown Timer tetap ada di bawah sini) ...

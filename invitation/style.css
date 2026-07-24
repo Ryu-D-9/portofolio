@@ -5,7 +5,12 @@
     box-sizing: border-box;
     font-family: 'Georgia', serif;
 }
+/* Efek Scroll Halus */
+html {
+    scroll-behavior: smooth;
+}
 body {
+    
     background: url('https://vasiota.com/wp-content/uploads/2022/11/Bautizo-Karla-Video-in-2022-_-Flower-graphic-design-Flower-background-wallpaper-Deer-wall-art-in-2022-_-Floral-cards-design-Flower-backgrounds-Flower-graphic-design-576x1024.jpeg') center/cover no-repeat;
     color: #333;
     overflow-x: hidden;
@@ -68,20 +73,28 @@ body {
     display: none;
     max-width: 500px;
     margin: 0 auto;
-    background-color: #fff,url('https://vasiota.com/wp-content/uploads/2022/11/Bautizo-Karla-Video-in-2022-_-Flower-graphic-design-Flower-background-wallpaper-Deer-wall-art-in-2022-_-Floral-cards-design-Flower-backgrounds-Flower-graphic-design-576x1024.jpeg') center/cover;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-bottom: 100px; /* <--- Tambahkan baris ini agar ada sisa scroll di paling bawah */
+    background-color: rgba(255, 255, 255, 0.95) url('https://vasiota.com/wp-content/uploads/2022/11/Bautizo-Karla-Video-in-2022-_-Flower-graphic-design-Flower-background-wallpaper-Deer-wall-art-in-2022-_-Floral-cards-design-Flower-backgrounds-Flower-graphic-design-576x1024.jpeg') center/cover no-repeat; 
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    border-radius: 20px;
+    overflow: hidden;
 }
 
-/* Section General */
+/* Section General - Diperbarui agar scroll terasa panjang */
 section {
-    padding: 40px 20px;
-    text-align: center;
+    min-height: 100vh; /* Membuat setiap bagian memiliki tinggi setidaknya 1 layar penuh */
+    padding: 100px 20px; /* Memperbesar ruang kosong (jarak) di atas dan bawah konten */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Memposisikan isi tepat di tengah layar */
+    align-items: center;
     border-bottom: 1px solid #ddd;
 }
+
 section h2 {
-    font-size: 2rem;
+    font-size: 2.2rem;
     color: #4a5c50;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 /* Profil Mempelai */
@@ -153,4 +166,16 @@ section h2 {
     border-radius: 5px;
     cursor: pointer;
     margin-top: 10px;
+}
+/* --- EFEK ANIMASI SCROLL (FADE UP) --- */
+.fade-up {
+    opacity: 0; /* Elemen disembunyikan awalnya */
+    transform: translateY(50px); /* Posisi elemen diturunkan 50 pixel */
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out; /* Kecepatan animasi */
+}
+
+/* Class ini akan ditambahkan otomatis oleh JavaScript saat elemen masuk layar */
+.fade-up.visible {
+    opacity: 1;
+    transform: translateY(0); /* Posisi kembali normal */
 }

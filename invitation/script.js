@@ -69,4 +69,27 @@ function toggleMusic() {
     }
 }
 
+// --- SENSOR EFEK SCROLL (INTERSECTION OBSERVER) ---
+document.addEventListener("DOMContentLoaded", function() {
+    // Pengaturan sensor
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.15 // Animasi berputar saat 15% bagian elemen sudah terlihat di layar
+    };
+
+    // Membuat fungsi sensor
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible'); // Menambahkan efek muncul
+                observer.unobserve(entry.target); // Supaya animasi hanya terjadi 1 kali (tidak mengulang saat discroll ke atas)
+            }
+        });
+    }, observerOptions);
+
+    // Mencari semua elemen yang memiliki class 'fade-up'
+    const fadeElements = document.querySelectorAll('.fade-up');
+    fadeElements.forEach(el => observer.observe(el));
+});
 // ... (Biarkan fungsi salinRekening dan hitung mundur/Countdown Timer tetap ada di bawah sini) ...
